@@ -13,9 +13,52 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2VudHJhbHBhcmthcmNoaXZlcyIsImEiOiJja2J3aXdtYzAwZ2ZrMnpucXhjcG9jbHdxIn0.eLl8yDer989epHWEfqABpA';
 var map = new mapboxgl.Map({
     container: 'map',
+    pitch: 60,
     style: 'mapbox://styles/centralparkarchives/ckbxb87ws0f7t1ipoyzkfmmdw', // stylesheet location
-    center: [24.911486, 60.226243], // starting position [lng, lat]
-    zoom: 14 // starting zoom
+/*     style: {
+        'version': 8,
+        'sources': {
+            'raster-tiles': {
+            'type': 'raster',
+            'tiles': [
+                'https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg'
+            ],
+            'tileSize': 256,
+            'attribution':
+                'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
+            }
+        },
+        'layers': [
+            {
+                'id': 'simple-tiles',
+                'type': 'raster',
+                'source': 'raster-tiles',
+                'minzoom': 0,
+                'maxzoom': 22
+            }
+        ]
+    }, */
+    center: [24.912975,60.227151], // starting position [lng, lat]
+    zoom: 16 // starting zoom
+});
+
+map.on('load', function() {
+    map.addSource('helsinki', {
+        'type': 'raster',
+        'tiles': [
+        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Opaskartta_1952&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=EPSG:3879&bbox=2.5487E7,6655000.0,2.5516E7,6690000.0&WIDTH=400&HEIGHT=400'
+        ],
+        'tileSize': 400
+    });
+    map.addLayer(
+    {
+        'id': 'helsinki',
+        'type': 'raster',
+        'source': 'helsinki',
+        'paint': {}
+    },
+        'aeroway-line'
+    );
 });
 </script>
 </body>
