@@ -7,37 +7,29 @@
     <link href='style.css' rel='stylesheet' />
 </head>
 <body>
-
-<div id='map' style='width: 100%; height: 100vh;'></div>
+<nav id="menu"></nav>
+<div id="map"></div>
 <script>
+
+function wfsURL(layerId) {
+  var url = new URL('https://kartta.hel.fi/ws/geoserver/avoindata/wfs');
+  var params = {
+      service : 'WFS',
+      version : '2.0.0',
+      request : 'GetFeature',
+      typeName : layerId,
+      outputFormat : 'application/json',
+      SrsName : 'EPSG:3879'
+  };
+  url.search = new URLSearchParams(params)
+  return url;
+}
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2VudHJhbHBhcmthcmNoaXZlcyIsImEiOiJja2J3aXdtYzAwZ2ZrMnpucXhjcG9jbHdxIn0.eLl8yDer989epHWEfqABpA';
 var map = new mapboxgl.Map({
     container: 'map',
     pitch: 60,
     style: 'mapbox://styles/centralparkarchives/ckbxb87ws0f7t1ipoyzkfmmdw', // stylesheet location
-/*     style: {
-        'version': 8,
-        'sources': {
-            'raster-tiles': {
-            'type': 'raster',
-            'tiles': [
-                'https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg'
-            ],
-            'tileSize': 256,
-            'attribution':
-                'Map tiles by <a target="_top" rel="noopener" href="http://stamen.com">Stamen Design</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" rel="noopener" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" rel="noopener" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>'
-            }
-        },
-        'layers': [
-            {
-                'id': 'simple-tiles',
-                'type': 'raster',
-                'source': 'raster-tiles',
-                'minzoom': 0,
-                'maxzoom': 22
-            }
-        ]
-    }, */
     center: [24.912975,60.227151], // starting position [lng, lat]
     zoom: 16 // starting zoom
 });
@@ -46,20 +38,89 @@ map.on('load', function() {
     map.addSource('helsinki', {
         'type': 'raster',
         'tiles': [
-        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Opaskartta_1952&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Vinovalovarjoste_2017_MDHS_varipinta_05m&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
+    map.addSource('noise', {
+        'type': 'raster',
+        'tiles': [
+        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Meluselvitys_2017_alue_01_tieliikenne_L_Aeq_paiva&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
     map.addLayer(
     {
-        'id': 'helsinki',
+        'id': 'helsinkilayer',
         'type': 'raster',
         'source': 'helsinki',
         'paint': {}
     },
-        'aeroway-line'
+    'aeroway-line'
     );
+
+    map.addLayer(
+    {
+        'id': 'noiselayer',
+        'type': 'raster',
+        'source': 'noise',
+        'paint': {}
+    },
+    'aeroway-line'
+    );
+
+    fetch(wfsURL('avoindata:Puurekisteri_piste'))
+    .then(res => res.json())
+    .then(response => {
+        map.addLayer({
+            'id': 'Puurekisteri_piste',
+            'type': 'symbol',
+            'source': {
+                'type': 'geojson',
+                'data': response
+            },
+            "layout": {
+                "icon-image": "park-11",
+                "icon-optional": true,
+            }
+        });
+    });
 });
+
+// enumerate ids of the layers
+var toggleableLayerIds = ['helsinkilayer', 'noiselayer'];
+
+// set up the corresponding toggle button for each layer
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+var id = toggleableLayerIds[i];
+ 
+var link = document.createElement('a');
+link.href = '#';
+link.className = 'active';
+link.textContent = id;
+ 
+link.onclick = function(e) {
+var clickedLayer = this.textContent;
+e.preventDefault();
+e.stopPropagation();
+ 
+var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+ 
+// toggle layer visibility by changing the layout object's visibility property
+if (visibility === 'visible') {
+map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+this.className = '';
+} else {
+this.className = 'active';
+map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+}
+};
+ 
+var layers = document.getElementById('menu');
+layers.appendChild(link);
+}
+
 </script>
 </body>
 </html>
