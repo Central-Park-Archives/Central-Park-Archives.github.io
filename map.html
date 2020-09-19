@@ -11,25 +11,11 @@
 <div id="map"></div>
 <script>
 
-function wfsURL(layerId) {
-  var url = new URL('https://kartta.hel.fi/ws/geoserver/avoindata/wfs');
-  var params = {
-      service : 'WFS',
-      version : '2.0.0',
-      request : 'GetFeature',
-      typeName : layerId,
-      outputFormat : 'application/json',
-      SrsName : 'EPSG:3879'
-  };
-  url.search = new URLSearchParams(params)
-  return url;
-}
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2VudHJhbHBhcmthcmNoaXZlcyIsImEiOiJja2J3aXdtYzAwZ2ZrMnpucXhjcG9jbHdxIn0.eLl8yDer989epHWEfqABpA';
 var map = new mapboxgl.Map({
     container: 'map',
     pitch: 60,
-    style: 'mapbox://styles/centralparkarchives/ckdt1r3jv1hy719ocdqqxjl7i', // stylesheet location
+    style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
     center: [24.912975,60.227151], // starting position [lng, lat]
     zoom: 16, // starting zoom
     hash: true
@@ -73,23 +59,6 @@ map.on('load', function() {
     },
     'aeroway-line'
     );
-
-    fetch(wfsURL('avoindata:Puurekisteri_piste'))
-    .then(res => res.json())
-    .then(response => {
-        map.addLayer({
-            'id': 'Puurekisteri_piste',
-            'type': 'symbol',
-            'source': {
-                'type': 'geojson',
-                'data': response
-            },
-            "layout": {
-                "icon-image": "park-11",
-                "icon-optional": true,
-            }
-        });
-    });
 });
 
 // enumerate ids of the layers
