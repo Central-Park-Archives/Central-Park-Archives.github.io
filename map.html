@@ -53,22 +53,6 @@ map.on('load', function() {
         ],
         'tileSize': 256
     });
-    
-    map.addSource('osmshape', {
-      type: 'geojson',
-      data: 'https://maps.wikimedia.org/geoshape?getgeojson=1&ids=Q1757'
-    });
-    
-    map.addLayer({
-      'id': 'osmlayer',
-      'type': 'fill',
-      'source': 'osmshape',
-      'layout': {},
-      'paint': {
-      'fill-color': '#088',
-      'fill-opacity': 0.8
-      }
-      });
 
     map.addLayer(
     {
@@ -82,7 +66,7 @@ map.on('load', function() {
 
     map.addLayer(
     {
-        'id': 'osmlayer',
+        'id': 'noiselayer',
         'type': 'raster',
         'source': 'noise',
         'paint': {}
