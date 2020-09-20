@@ -16,6 +16,14 @@
     });
 }
 
+// Define bounds that conform to the `LngLatBoundsLike` object.
+var bounds = [
+    [24.874919529144393, 60.21768383792113], // [west, south]
+    [24.949899195130172, 60.238868778804886]  // [east, north]
+    ];
+    // Set the map's max bounds.
+    map.setMaxBounds(bounds);
+
 //
 // Map controls
 //
