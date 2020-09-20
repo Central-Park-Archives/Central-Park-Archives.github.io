@@ -34,7 +34,7 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1943', 'Ilmakuva 1950'];
+    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1943', 'Ilmakuva 1950', 'Ilmakuva 1964'];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -120,6 +120,14 @@ function loadMapLayers() {
         'tileSize': 256
     });
 
+    map.addSource('aerial-1964', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1964&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
     // Map layers
 
     map.addLayer({
@@ -148,6 +156,17 @@ function loadMapLayers() {
             'id': 'Ilmakuva 1950',
             'type': 'raster',
             'source': 'aerial-1950',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1964',
+            'type': 'raster',
+            'source': 'aerial-1964',
             'layout': {
                 'visibility': 'none'
             }
