@@ -34,7 +34,7 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['Helsinki 1950', 'noiselayer'];
+    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1950'];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -96,7 +96,7 @@ function loadMapLayers() {
         'data': null
     });
 
-    map.addSource('helsinki-1950', {
+    map.addSource('aerial-1950', {
         'type': 'raster',
         'tiles': [
             'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1950&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
@@ -104,10 +104,10 @@ function loadMapLayers() {
         'tileSize': 256
     });
 
-    map.addSource('noise', {
+    map.addSource('aerial-1932', {
         'type': 'raster',
         'tiles': [
-        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Opaskartta_1940&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1932&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
@@ -115,9 +115,9 @@ function loadMapLayers() {
     // Map layers
 
     map.addLayer({
-            'id': 'Helsinki 1950',
+            'id': 'Ilmakuva 1950',
             'type': 'raster',
-            'source': 'helsinki-1950',
+            'source': 'aerial-1950',
             'layout': {
                 'visibility': 'none'
             }
@@ -126,9 +126,9 @@ function loadMapLayers() {
     );
 
     map.addLayer({
-            'id': 'noiselayer',
+            'id': 'Ilmakuva 1932',
             'type': 'raster',
-            'source': 'noise',
+            'source': 'aerial-1932',
             'layout': {
                 'visibility': 'none'
             }
