@@ -183,8 +183,8 @@ function addMapInteractions() {
         //You can adjust the values of the popup to match the headers of your CSV. 
         // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV. 
         var description = `<h4>${row.properties.place}</h4>`;
-        var fileId='14JcrdS4FN9bPVK2OCvW6opInr8cN-mYK'
-        description += `<audio controls><source src="https://drive.google.com/uc?export=${fileId}" type="audio/ogg"></audio>`
+        var fileId=row.properties.link.split("/")[5];
+        description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/ogg"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
         description += `<p>${row.properties["file name / link"]}</p>`
         description += `<p>${row.properties.comments}</p>`
         description += `<p>${row.properties.topics}</p>`
