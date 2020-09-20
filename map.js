@@ -34,7 +34,7 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['helsinkilayer', 'noiselayer'];
+    var toggleableLayerIds = ['Helsinki 1950', 'noiselayer'];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -96,7 +96,7 @@ function loadMapLayers() {
         'data': null
     });
 
-    map.addSource('helsinki', {
+    map.addSource('helsinki-1950', {
         'type': 'raster',
         'tiles': [
             'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1950&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
@@ -115,9 +115,9 @@ function loadMapLayers() {
     // Map layers
 
     map.addLayer({
-            'id': 'helsinkilayer',
+            'id': 'Helsinki 1950',
             'type': 'raster',
-            'source': 'helsinki',
+            'source': 'helsinki-1950',
             'layout': {
                 'visibility': 'none'
             }
