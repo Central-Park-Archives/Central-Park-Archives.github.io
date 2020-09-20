@@ -9,7 +9,8 @@
     var map = new mapboxgl.Map({
         container: 'map',
         pitch: 60,
-        style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
+        //style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
+        style: 'mapbox://styles/centralparkarchives/ckfbezg2g1f211ap0uzgitj7l', // stylesheet location
         center: [24.912975, 60.227151], // starting position [lng, lat]
         zoom: 16
     });
@@ -34,7 +35,7 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['helsinkilayer', 'noiselayer'];
+    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1943', 'Ilmakuva 1950', 'Ilmakuva 1964', 'Ilmakuva 1976', 'Ilmakuva 1988'];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -96,18 +97,50 @@ function loadMapLayers() {
         'data': null
     });
 
-    map.addSource('helsinki', {
+    map.addSource('aerial-1932', {
         'type': 'raster',
         'tiles': [
-            'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Vinovalovarjoste_2017_MDHS_varipinta_05m&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1932&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
 
-    map.addSource('noise', {
+    map.addSource('aerial-1943', {
         'type': 'raster',
         'tiles': [
-        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Opaskartta_1940&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1943&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
+    map.addSource('aerial-1950', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1950&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
+    map.addSource('aerial-1964', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1964&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
+    map.addSource('aerial-1976', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1976&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
+    map.addSource('aerial-1988', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1988&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
@@ -115,9 +148,9 @@ function loadMapLayers() {
     // Map layers
 
     map.addLayer({
-            'id': 'helsinkilayer',
+            'id': 'Ilmakuva 1932',
             'type': 'raster',
-            'source': 'helsinki',
+            'source': 'aerial-1932',
             'layout': {
                 'visibility': 'none'
             }
@@ -126,9 +159,53 @@ function loadMapLayers() {
     );
 
     map.addLayer({
-            'id': 'noiselayer',
+            'id': 'Ilmakuva 1943',
             'type': 'raster',
-            'source': 'noise',
+            'source': 'aerial-1943',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1950',
+            'type': 'raster',
+            'source': 'aerial-1950',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1964',
+            'type': 'raster',
+            'source': 'aerial-1964',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1976',
+            'type': 'raster',
+            'source': 'aerial-1976',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1988',
+            'type': 'raster',
+            'source': 'aerial-1988',
             'layout': {
                 'visibility': 'none'
             }
