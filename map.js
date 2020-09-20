@@ -9,7 +9,8 @@
     var map = new mapboxgl.Map({
         container: 'map',
         pitch: 60,
-        style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
+        //style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
+        style: 'mapbox://styles/centralparkarchives/ckfbezg2g1f211ap0uzgitj7l', // stylesheet location
         center: [24.912975, 60.227151], // starting position [lng, lat]
         zoom: 16
     });
