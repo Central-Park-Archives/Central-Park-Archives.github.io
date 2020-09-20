@@ -1,99 +1,86 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
+
 <head>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
-    <link href='style.css' rel='stylesheet' />
+    <!-- Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+
+    <!-- UIkit -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.7/dist/js/uikit-icons.min.js"></script>
+
+    <!-- Other  -->
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            left: 10px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        #menu a:last-child {
+            border: none;
+        }
+
+        #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+
+        #menu a.active {
+            background-color: #3887be;
+            color: #ffffff;
+        }
+
+        #menu a.active:hover {
+            background: #3074a4;
+        }
+
+    </style>
+
 </head>
+
 <body>
-<nav id="menu"></nav>
-<div id="map"></div>
-<script>
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2VudHJhbHBhcmthcmNoaXZlcyIsImEiOiJja2J3aXdtYzAwZ2ZrMnpucXhjcG9jbHdxIn0.eLl8yDer989epHWEfqABpA';
-var map = new mapboxgl.Map({
-    container: 'map',
-    pitch: 60,
-    style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
-    center: [24.912975,60.227151], // starting position [lng, lat]
-    zoom: 16, // starting zoom
-    hash: true
-});
+    <nav id="menu"></nav>
+    <div id="map"></div>
 
-// Add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.NavigationControl());
 
-map.on('load', function() {
-    map.addSource('helsinki', {
-        'type': 'raster',
-        'tiles': [
-        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Vinovalovarjoste_2017_MDHS_varipinta_05m&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
-        ],
-        'tileSize': 256
-    });
-    map.addSource('noise', {
-        'type': 'raster',
-        'tiles': [
-        'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=1940_opaskartta&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
-        ],
-        'tileSize': 256
-    });
-
-    map.addLayer(
-    {
-        'id': 'helsinkilayer',
-        'type': 'raster',
-        'source': 'helsinki',
-        'paint': {}
-    },
-    'aeroway-line'
-    );
-
-    map.addLayer(
-    {
-        'id': 'noiselayer',
-        'type': 'raster',
-        'source': 'noise',
-        'paint': {}
-    },
-    'aeroway-line'
-    );
-});
-
-// enumerate ids of the layers
-var toggleableLayerIds = ['helsinkilayer', 'noiselayer'];
-
-// set up the corresponding toggle button for each layer
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-var id = toggleableLayerIds[i];
- 
-var link = document.createElement('a');
-link.href = '#';
-link.className = 'active';
-link.textContent = id;
- 
-link.onclick = function(e) {
-var clickedLayer = this.textContent;
-e.preventDefault();
-e.stopPropagation();
- 
-var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
- 
-// toggle layer visibility by changing the layout object's visibility property
-if (visibility === 'visible') {
-map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-this.className = '';
-} else {
-this.className = 'active';
-map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-}
-};
- 
-var layers = document.getElementById('menu');
-layers.appendChild(link);
-}
-
-</script>
+    <script src="./map.js"></script>
 </body>
+
 </html>
