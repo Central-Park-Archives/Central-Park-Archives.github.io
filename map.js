@@ -237,8 +237,16 @@ function loadMapLayers() {
                     'red',
                     ['boolean', ['feature-state', 'audible'], false],
                     'blue',
+                    ['boolean', ['feature-state', 'nearest'], false],
+                    'black',
                     'grey'
                     ],
+                    'circle-stroke-width': [
+                        'case',
+                        ['boolean', ['feature-state', 'nearest'], false],
+                        1,
+                        0
+                        ],
                     'circle-radius': ['+',5,[
                         '/',.05,['feature-state', 'distance']
                         ]]
@@ -360,6 +368,18 @@ function addLocationAudio(data){
 
     map.on('mousemove', function(e) {
 
+        var nearestPoint = (turf.nearestPoint(e.lngLat.toArray(), data))
+
+        map.removeFeatureState({
+            source: 'sheet-data'
+            });
+        map.setFeatureState({
+            source: 'sheet-data',
+            id: nearestPoint.properties.featureIndex,
+            }, {
+            nearest: true
+            });
+
         data.features.forEach((f,idx) => {
             data.features[idx].properties["distance"]=turf.distance(
                 turf.point([e.lngLat.lng, e.lngLat.lat]),
@@ -374,6 +394,7 @@ function addLocationAudio(data){
                 audible: data.features[idx].properties["distance"] < minimumAudibleDistance ? true : false,
                 focus: data.features[idx].properties["distance"] < focusAudibleDistance ? true : false
                 });
+
 
             //   console.log(data.features[idx].properties);
         });
