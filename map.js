@@ -34,7 +34,7 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1950'];
+    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1943', 'Ilmakuva 1950'];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -96,14 +96,6 @@ function loadMapLayers() {
         'data': null
     });
 
-    map.addSource('aerial-1950', {
-        'type': 'raster',
-        'tiles': [
-            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1950&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
-        ],
-        'tileSize': 256
-    });
-
     map.addSource('aerial-1932', {
         'type': 'raster',
         'tiles': [
@@ -112,12 +104,28 @@ function loadMapLayers() {
         'tileSize': 256
     });
 
+    map.addSource('aerial-1943', {
+        'type': 'raster',
+        'tiles': [
+        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1943&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
+    map.addSource('aerial-1950', {
+        'type': 'raster',
+        'tiles': [
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1950&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+        ],
+        'tileSize': 256
+    });
+
     // Map layers
 
     map.addLayer({
-            'id': 'Ilmakuva 1950',
+            'id': 'Ilmakuva 1932',
             'type': 'raster',
-            'source': 'aerial-1950',
+            'source': 'aerial-1932',
             'layout': {
                 'visibility': 'none'
             }
@@ -126,9 +134,20 @@ function loadMapLayers() {
     );
 
     map.addLayer({
-            'id': 'Ilmakuva 1932',
+            'id': 'Ilmakuva 1943',
             'type': 'raster',
-            'source': 'aerial-1932',
+            'source': 'aerial-1943',
+            'layout': {
+                'visibility': 'none'
+            }
+        },
+        'aeroway-line'
+    );
+
+    map.addLayer({
+            'id': 'Ilmakuva 1950',
+            'type': 'raster',
+            'source': 'aerial-1950',
             'layout': {
                 'visibility': 'none'
             }
