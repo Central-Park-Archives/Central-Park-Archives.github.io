@@ -11,9 +11,7 @@
         pitch: 60,
         style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
         center: [24.912975, 60.227151], // starting position [lng, lat]
-        zoom: 16, // starting zoom
-        transformRequest: transformRequest,
-        hash: true
+        zoom: 16
     });
 }
 
@@ -109,7 +107,7 @@ function loadMapLayers() {
     map.addSource('noise', {
         'type': 'raster',
         'tiles': [
-            'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=Meluselvitys_2017_alue_01_tieliikenne_L_Aeq_paiva&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+            'https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=1940_opaskartta&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
@@ -185,7 +183,8 @@ function addMapInteractions() {
         //You can adjust the values of the popup to match the headers of your CSV. 
         // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV. 
         var description = `<h4>${row.properties.place}</h4>`;
-        description += `<audio controls><source src="#" type="audio/ogg"></audio>`
+        var fileId='14JcrdS4FN9bPVK2OCvW6opInr8cN-mYK'
+        description += `<audio controls><source src="https://drive.google.com/uc?export=${fileId}" type="audio/ogg"></audio>`
         description += `<p>${row.properties["file name / link"]}</p>`
         description += `<p>${row.properties.comments}</p>`
         description += `<p>${row.properties.topics}</p>`
@@ -209,7 +208,7 @@ function addMapInteractions() {
             .addTo(map);
     });
 
-    // inspect a cluster on click
+    // inspect on click
     map.on('click', 'sheet-data', function (e) {
 
         var features = map.queryRenderedFeatures(e.point, {
@@ -232,17 +231,3 @@ function addMapInteractions() {
         map.getCanvas().style.cursor = '';
     });
 }
-
-//
-// Other functions
-//
-
-var transformRequest = (url, resourceType) => {
-    var isMapboxRequest =
-        url.slice(8, 22) === "api.mapbox.com" ||
-        url.slice(10, 26) === "tiles.mapbox.com";
-    return {
-        url: isMapboxRequest ?
-            url.replace("?", "?pluginName=sheetMapper&") : url
-    };
-};
