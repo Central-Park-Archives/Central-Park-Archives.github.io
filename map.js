@@ -64,16 +64,20 @@ map.addControl(
             // toggle layer visibility by changing the layout object's visibility property
             if (visibility === 'visible') {
                 map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                this.className = '';
+                this.parentElement.className = '';
             } else {
-                this.className = 'active';
+                console.log(this)
+                this.parentElement.className = 'uk-active';
                 map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
             }
         };
 
+        var li = document.createElement('li');
+        li.appendChild(link);
 
-        var layers = document.getElementById('menu');
-        layers.appendChild(link);
+
+        var layers = document.getElementById('dropdown');
+        layers.appendChild(li);
 
     }
 
