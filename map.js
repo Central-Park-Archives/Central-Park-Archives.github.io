@@ -106,6 +106,7 @@ function loadMapLayers() {
 
     map.addSource('sheet-data', {
         'type': 'geojson',
+        'generateId': true,
         'data': null
     });
 
@@ -230,11 +231,36 @@ function loadMapLayers() {
             'type': 'circle',
             'source': 'sheet-data',
             'paint': {
-                'circle-color': 'red'
+                'circle-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'focus'], false],
+                    'red',
+                    ['boolean', ['feature-state', 'audible'], false],
+                    'blue',
+                    'grey'
+                    ],
+                    'circle-radius': ['+',5,[
+                        '/',.05,['feature-state', 'distance']
+                        ]]
             }
         },
         'aeroway-line'
     );
+
+    map.addLayer({
+        'id': 'sheet-data labels',
+        'type': 'symbol',
+        'source': 'sheet-data',
+        'layout': {
+            'text-field': ['get','distance'],
+            'text-font': [
+                'literal',
+                ['DIN Offc Pro Italic', 'Arial Unicode MS Regular']
+                ]
+        }
+    },
+    'aeroway-line'
+);
 
     // Request spreadsheet data
     // https://docs.google.com/spreadsheets/d/1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI/edit?usp=sharing
@@ -249,7 +275,10 @@ function loadMapLayers() {
                 lonfield: 'Longitude',
                 delimiter: ','
             }, function (err, data) {
-                map.getSource('sheet-data').setData(data)
+                map.getSource('sheet-data').setData(data);
+
+                // Control volume of audio locations based on distance
+                addLocationAudio(data);
             })
         })
 
@@ -319,4 +348,37 @@ function addMapInteractions() {
     map.on('mouseleave', 'sheet-data', function () {
         map.getCanvas().style.cursor = '';
     });
+
+}
+
+//
+
+function addLocationAudio(data){
+
+    var minimumAudibleDistance=0.05; // Distance after which a location is audible
+    var focusAudibleDistance=0.005; // Distance at which only a single location is audible
+
+    map.on('mousemove', function(e) {
+
+        data.features.forEach((f,idx) => {
+            data.features[idx].properties["distance"]=turf.distance(
+                turf.point([e.lngLat.lng, e.lngLat.lat]),
+                turf.point(data.features[idx].geometry.coordinates)
+              );
+
+              map.setFeatureState({
+                source: 'sheet-data',
+                id: idx,
+                }, {
+                distance: data.features[idx].properties["distance"],
+                audible: data.features[idx].properties["distance"] < minimumAudibleDistance ? true : false,
+                focus: data.features[idx].properties["distance"] < focusAudibleDistance ? true : false
+                });
+
+            //   console.log(data.features[idx].properties);
+        });
+
+        map.getSource('sheet-data').setData(data);
+
+      });
 }
