@@ -55,8 +55,9 @@ map.addControl(
     // Set the label to the aerial image
     function chooseMap(ilmakuva) {
         // Set the label to the month
-        map.setLayoutProperty(ilmakuva, 'visibility', 'visible');
-        document.getElementById('ilmakuva').textContent = toggleableLayerIds[ilmakuva];
+        var layername = toggleableLayerIds[ilmakuva];
+        map.setLayoutProperty(layername, 'visibility', 'visible');
+        document.getElementById('ilmakuva').textContent = layername;
     }
 
     document
