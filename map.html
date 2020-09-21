@@ -35,6 +35,30 @@
             left: 10px;
         }
 
+        .map-overlay {
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        position: absolute;
+        width: 25%;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        }
+        
+        .map-overlay h2 {
+        line-height: 24px;
+        display: block;
+        margin: 0 0 10px;
+        }
+        
+        .map-overlay input {
+        background-color: transparent;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        margin: 0;
+        cursor: ew-resize;
+        }
+
   
 
     </style>
@@ -44,14 +68,21 @@
 <body>
 
     <nav id="menu">
-        <button class="uk-button uk-button-primary" type="button"><span uk-icon="icon: menu"></span> Layers</button>
+        <button class="uk-button uk-button-primary" type="button"><span uk-icon="icon: menu"></span> Tasot</button>
         <div uk-dropdown>
             <ul id="dropdown" class="uk-nav uk-dropdown-nav">
-                <li class="uk-nav-header">Basemap</li>
+                <li class="uk-nav-header">Vanhat ilmakuvat</li>
             </ul>
         </div>
     </nav>
     <div id="map"></div>
+    <div class="map-overlay top">
+        <div class="map-overlay-inner">
+            <h2>Vaihda ilmakuvaa</h2>
+            <label id="month"></label>
+            <input id="slider" type="range" min="0" max="11" step="1" value="0" />
+        </div>
+    </div>
     <div id="audio" style="padding-top:50px"></div>
 
     <script src="./map.js"></script>
