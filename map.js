@@ -335,7 +335,7 @@ function addMapInteractions() {
         description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
         description += `<p>${row.properties["file name / link"]}</p>`
         description += `<p>${row.properties.comments}</p>`
-        description += `<p>${row.properties.topics}</p>`
+        description += `<p>${row.properties.summary}</p>`
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
