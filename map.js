@@ -232,9 +232,9 @@ function loadMapLayers() {
             'paint': {
                 'circle-color': [
                     'case',
-                    ['boolean', ['feature-state', 'focus'], false],
+                    ['boolean', ['feature-state', 'active'], false],
                     'red',
-                    ['boolean', ['feature-state', 'audible'], false],
+                    ['boolean', ['feature-state', 'nearby'], false],
                     'blue',
                     ['boolean', ['feature-state', 'nearest'], false],
                     'black',
@@ -282,10 +282,8 @@ function loadMapLayers() {
                 lonfield: 'Longitude',
                 delimiter: ','
             }, function (err, data) {
-                map.getSource('sheet-data').setData(data);
-
                 // Control volume of audio locations based on distance
-                addLocationAudio(data);
+                addHotspots(data, 'sheet-data');
             })
         })
 
@@ -356,47 +354,130 @@ function addMapInteractions() {
 
 }
 
-//
+// Add map hotspots from given data points
 
-function addLocationAudio(data) {
+function addHotspots(data, mapSource) {
 
-    var minimumAudibleDistance = 0.05; // Distance after which a location is audible
-    var focusAudibleDistance = 0.005; // Distance at which only a single location is audible
+    addHotspotAudio()
+    updateHotspot(map.getCenter().toArray())
 
-    map.on('mousemove', function (e) {
+    map.on('move', function (e) {
+        updateHotspot(map.getCenter().toArray())
+    });
 
-        var nearestPoint = (turf.nearestPoint(e.lngLat.toArray(), data))
+    // map.on('mousemove', function (e) {
+    //     updatelHotspot(e.lngLat.toArray();
+    // });
 
-        map.removeFeatureState({
-            source: 'sheet-data'
-        });
-        map.setFeatureState({
-            source: 'sheet-data',
-            id: nearestPoint.properties.featureIndex,
-        }, {
-            nearest: true
-        });
+    // Add audio files that will be controlled by the hotspots
+    function addHotspotAudio() {
 
         data.features.forEach((f, idx) => {
-            data.features[idx].properties["distance"] = turf.distance(
-                turf.point([e.lngLat.lng, e.lngLat.lat]),
-                turf.point(data.features[idx].geometry.coordinates)
+            var fileId = f.properties.link.split("/")[5];
+            document.getElementById('audio').innerHTML+=`<audio controls loop id="audio-${idx}"><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>`
+        })
+
+    }
+
+    // Update hotspot data based on location
+    // Calculate distance from location to each hotspot
+
+    function updateHotspot(location) {
+
+        var activeHotspotDistance = 0.005; // Distance at which a location is considered active
+        var nearbyHotspotDistance = 0.07; // Distance at which a location is considered nearby to be audible
+        var maxNearbyHotspots = 3;
+
+        // Find nearest hotspot to location
+        {
+            var nearestHotspot = (turf.nearest(location, data));
+
+            map.removeFeatureState({
+                source: mapSource
+            });
+            map.setFeatureState({
+                source: mapSource,
+                id: nearestHotspot.properties.featureIndex,
+            }, {
+                nearest: true
+            });
+        }
+
+        var activeHotspot = false;
+        var nearbyHotspots = [];
+
+        data.features.forEach((f, idx) => {
+
+            var distance= turf.distance(
+                location,
+                turf.point(f.geometry.coordinates)
             );
+
+            data.features[idx].properties["distance"] = distance
 
             map.setFeatureState({
                 source: 'sheet-data',
                 id: idx,
             }, {
-                distance: data.features[idx].properties["distance"],
-                audible: data.features[idx].properties["distance"] < minimumAudibleDistance ? true : false,
-                focus: data.features[idx].properties["distance"] < focusAudibleDistance ? true : false
+                distance: distance,
+                nearby: distance < nearbyHotspotDistance ? true : false,
+                active: distance < activeHotspotDistance ? true : false
             });
 
 
-            //   console.log(data.features[idx].properties);
+            // Play audio of nearby hotspots
+            
+            if(distance < nearbyHotspotDistance){
+
+                
+                // Focus on a single audio for the nearest active hotspot
+                // Else play all nearby with volume scaled by distance
+
+                if(distance < activeHotspotDistance){
+                    activeHotspot = true;
+                    
+                    if(idx==nearestHotspot.properties.featureIndex){
+
+                        // Pause all nearby hostposts to focus on nearest active one
+                        nearbyHotspots.forEach(idx=>document.getElementById("audio-"+idx).pause());
+
+                        document.getElementById("audio-"+idx).volume=1;
+                        document.getElementById("audio-"+idx).play();
+
+                    }
+                }else{
+                    if(!activeHotspot && nearbyHotspots.length < maxNearbyHotspots){
+
+                        nearbyHotspots.push(idx);
+
+                        var volume = scaleValue(distance,[activeHotspotDistance, nearbyHotspotDistance],[0.9,0])
+                        document.getElementById("audio-"+idx).volume=volume;
+                        document.getElementById("audio-"+idx).play();
+                    }else{
+                        document.getElementById("audio-"+idx).pause();
+                    }
+                }
+ 
+            }else{
+                document.getElementById("audio-"+idx).pause();
+            }
+
         });
 
         map.getSource('sheet-data').setData(data);
-
-    });
+    }
 }
+
+// Utility
+
+function scaleValue(value, from, to) {
+	var scale = (to[1] - to[0]) / (from[1] - from[0]);
+	var capped = Math.min(from[1], Math.max(from[0], value)) - from[0];
+	return (capped * scale + to[0]);
+}
+const index = (scale, min, max, bands, n) =>
+    Math.floor(bands * scale(n - min) / scale(max - min + 1));
+
+const log = x => Math.log(x + 1);
+
+const logBand = n => scaleValue(log, 0, 100, 5, n);
