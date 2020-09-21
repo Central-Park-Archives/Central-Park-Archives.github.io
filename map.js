@@ -43,7 +43,17 @@ map.addControl(
 
 //  Add layer toggles
 {
-    var toggleableLayerIds = ['Ilmakuva 1932', 'Ilmakuva 1943', 'Ilmakuva 1950', 'Ilmakuva 1964', 'Ilmakuva 1976', 'Ilmakuva 1988'];
+    var toggleableLayerIds = [
+        'Ilmakuva 1932', 
+        'Ilmakuva 1943', 
+        'Ilmakuva 1950', 
+        'Ilmakuva 1964', 
+        'Ilmakuva 1976', 
+        'Ilmakuva 1988'
+    ];
+
+    // Set the label to the aerial image
+    document.getElementById('ilmakuva').textContent = toggleableLayerIds[ilmakuva];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
