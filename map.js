@@ -19,10 +19,10 @@
 // Define bounds that conform to the `LngLatBoundsLike` object.
 var bounds = [
     [24.874919529144393, 60.21768383792113], // [west, south]
-    [24.949899195130172, 60.238868778804886]  // [east, north]
-    ];
-    // Set the map's max bounds.
-    map.setMaxBounds(bounds);
+    [24.949899195130172, 60.238868778804886] // [east, north]
+];
+// Set the map's max bounds.
+map.setMaxBounds(bounds);
 
 //
 // Map controls
@@ -66,7 +66,6 @@ map.addControl(
                 map.setLayoutProperty(clickedLayer, 'visibility', 'none');
                 this.parentElement.className = '';
             } else {
-                console.log(this)
                 this.parentElement.className = 'uk-active';
                 map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
             }
@@ -113,7 +112,7 @@ function loadMapLayers() {
     map.addSource('aerial-1932', {
         'type': 'raster',
         'tiles': [
-        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1932&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1932&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
@@ -121,7 +120,7 @@ function loadMapLayers() {
     map.addSource('aerial-1943', {
         'type': 'raster',
         'tiles': [
-        'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1943&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
+            'https://geoserver.hel.fi:443/geoserver/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=orto1943&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256'
         ],
         'tileSize': 256
     });
@@ -240,35 +239,35 @@ function loadMapLayers() {
                     ['boolean', ['feature-state', 'nearest'], false],
                     'black',
                     'grey'
-                    ],
-                    'circle-stroke-width': [
-                        'case',
-                        ['boolean', ['feature-state', 'nearest'], false],
-                        1,
-                        0
-                        ],
-                    'circle-radius': ['+',5,[
-                        '/',.05,['feature-state', 'distance']
-                        ]]
+                ],
+                'circle-stroke-width': [
+                    'case',
+                    ['boolean', ['feature-state', 'nearest'], false],
+                    1,
+                    0
+                ],
+                'circle-radius': ['+', 5, [
+                    '/', .05, ['feature-state', 'distance']
+                ]]
             }
         },
         'aeroway-line'
     );
 
     map.addLayer({
-        'id': 'sheet-data labels',
-        'type': 'symbol',
-        'source': 'sheet-data',
-        'layout': {
-            'text-field': ['get','distance'],
-            'text-font': [
-                'literal',
-                ['DIN Offc Pro Italic', 'Arial Unicode MS Regular']
+            'id': 'sheet-data labels',
+            'type': 'symbol',
+            'source': 'sheet-data',
+            'layout': {
+                'text-field': ['get', 'distance'],
+                'text-font': [
+                    'literal',
+                    ['DIN Offc Pro Italic', 'Arial Unicode MS Regular']
                 ]
-        }
-    },
-    'aeroway-line'
-);
+            }
+        },
+        'aeroway-line'
+    );
 
     // Request spreadsheet data
     // https://docs.google.com/spreadsheets/d/1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI/edit?usp=sharing
@@ -309,13 +308,11 @@ function addMapInteractions() {
         //You can adjust the values of the popup to match the headers of your CSV. 
         // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV. 
         var description = `<h4>${row.properties.place}</h4>`;
-        var fileId=row.properties.link.split("/")[5];
-        description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/ogg"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
+        var fileId = row.properties.link.split("/")[5];
+        description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
         description += `<p>${row.properties["file name / link"]}</p>`
         description += `<p>${row.properties.comments}</p>`
         description += `<p>${row.properties.topics}</p>`
-
-        console.log(row)
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -361,39 +358,39 @@ function addMapInteractions() {
 
 //
 
-function addLocationAudio(data){
+function addLocationAudio(data) {
 
-    var minimumAudibleDistance=0.05; // Distance after which a location is audible
-    var focusAudibleDistance=0.005; // Distance at which only a single location is audible
+    var minimumAudibleDistance = 0.05; // Distance after which a location is audible
+    var focusAudibleDistance = 0.005; // Distance at which only a single location is audible
 
-    map.on('mousemove', function(e) {
+    map.on('mousemove', function (e) {
 
         var nearestPoint = (turf.nearestPoint(e.lngLat.toArray(), data))
 
         map.removeFeatureState({
             source: 'sheet-data'
-            });
+        });
         map.setFeatureState({
             source: 'sheet-data',
             id: nearestPoint.properties.featureIndex,
-            }, {
+        }, {
             nearest: true
-            });
+        });
 
-        data.features.forEach((f,idx) => {
-            data.features[idx].properties["distance"]=turf.distance(
+        data.features.forEach((f, idx) => {
+            data.features[idx].properties["distance"] = turf.distance(
                 turf.point([e.lngLat.lng, e.lngLat.lat]),
                 turf.point(data.features[idx].geometry.coordinates)
-              );
+            );
 
-              map.setFeatureState({
+            map.setFeatureState({
                 source: 'sheet-data',
                 id: idx,
-                }, {
+            }, {
                 distance: data.features[idx].properties["distance"],
                 audible: data.features[idx].properties["distance"] < minimumAudibleDistance ? true : false,
                 focus: data.features[idx].properties["distance"] < focusAudibleDistance ? true : false
-                });
+            });
 
 
             //   console.log(data.features[idx].properties);
@@ -401,5 +398,5 @@ function addLocationAudio(data){
 
         map.getSource('sheet-data').setData(data);
 
-      });
+    });
 }
