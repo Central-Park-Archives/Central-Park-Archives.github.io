@@ -46,12 +46,13 @@ map.addControl(
 //  Add layer toggles
 {
     var toggleableLayerIds = [
-        'Ilmakuva 1932', 
-        'Ilmakuva 1943', 
+        'Ilmakuva 1932',
+        'Ilmakuva 1943',
         'Ilmakuva 1950', 
-        'Ilmakuva 1964', 
-        'Ilmakuva 1976', 
+        'Ilmakuva 1964',
+        'Ilmakuva 1976',
         'Ilmakuva 1988'
+        'Collection Layer'
     ];
 
     // Set the label to the aerial image
@@ -107,9 +108,9 @@ map.addControl(
 
 }
 
-// 
+//
 //  Map logic
-// 
+//
 
 map.on('load', function () {
 
@@ -328,8 +329,8 @@ function addMapInteractions() {
         var row = e.features[0];
         var coordinates = row.geometry.coordinates.slice();
 
-        //You can adjust the values of the popup to match the headers of your CSV. 
-        // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV. 
+        //You can adjust the values of the popup to match the headers of your CSV.
+        // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
         var description = `<h4>${row.properties.place}</h4>`;
         var fileId = row.properties.link.split("/")[5];
         description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
@@ -451,16 +452,16 @@ function addHotspots(data, mapSource) {
 
 
             // Play audio of nearby hotspots
-            
+
             if(distance < nearbyHotspotDistance){
 
-                
+
                 // Focus on a single audio for the nearest active hotspot
                 // Else play all nearby with volume scaled by distance
 
                 if(distance < activeHotspotDistance){
                     activeHotspot = true;
-                    
+
                     if(idx==nearestHotspot.properties.featureIndex){
 
                         // Pause all nearby hostposts to focus on nearest active one
@@ -482,7 +483,7 @@ function addHotspots(data, mapSource) {
                         document.getElementById("audio-"+idx).pause();
                     }
                 }
- 
+
             }else{
                 document.getElementById("audio-"+idx).pause();
             }
