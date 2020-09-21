@@ -48,11 +48,11 @@ map.addControl(
     var toggleableLayerIds = [
         'Ilmakuva 1932',
         'Ilmakuva 1943',
-        'Ilmakuva 1950', 
+        'Ilmakuva 1950',
         'Ilmakuva 1964',
         'Ilmakuva 1976',
         'Ilmakuva 1988'
-        'Collection Layer'
+        
     ];
 
     // Set the label to the aerial image
