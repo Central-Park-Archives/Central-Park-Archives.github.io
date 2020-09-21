@@ -53,7 +53,7 @@ map.addControl(
     ];
 
     // Set the label to the aerial image
-    document.getElementById('ilmakuva').textContent = toggleableLayerIds[ilmakuva];
+    document.getElementById('ilmakuva').textContent = "hi!";//toggleableLayerIds[ilmakuva];
 
     // set up the corresponding toggle button for each layer
     for (var i = 0; i < toggleableLayerIds.length; i++) {
