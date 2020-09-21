@@ -24,6 +24,8 @@ var bounds = [
 // Set the map's max bounds.
 map.setMaxBounds(bounds);
 
+var currentLayer;
+
 //
 // Map controls
 //
@@ -55,9 +57,10 @@ map.addControl(
     // Set the label to the aerial image
     function chooseMap(ilmakuva) {
         // Set the label to the month
-        var layername = toggleableLayerIds[ilmakuva];
-        map.setLayoutProperty(layername, 'visibility', 'visible');
-        document.getElementById('ilmakuva').textContent = layername;
+        map.setLayoutProperty(currentLayer, 'visibility', 'none');
+        currentLayer = toggleableLayerIds[ilmakuva];
+        map.setLayoutProperty(currentLayer, 'visibility', 'visible');
+        document.getElementById('ilmakuva').textContent = currentLayer;
     }
 
     document
