@@ -80,7 +80,9 @@ map.addControl(
     .addEventListener('input', function (e) {
     var ilmakuva = parseInt(e.target.value, 10);
     chooseMap(ilmakuva);
-    
+
+});
+
 /*   function chooseMap(ilmakuva) {
     if(ilmakuva > 0) {
       var layername = toggleableLayers[0].layers[ilmakuva + 1];
