@@ -202,7 +202,8 @@ function loadMapLayers() {
                 'visibility': 'none'
             }
         },
-        'aeroway-line'
+        'aeroway-line',
+        'waterway'
     );
 
     map.addLayer({
