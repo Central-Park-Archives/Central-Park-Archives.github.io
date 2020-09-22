@@ -46,6 +46,11 @@ map.addControl(
 //  Add layer toggles
 {
     var toggleableLayerIds = [
+        'Ilmakuvat'
+        
+    ];
+
+    var aerialLayers = [
         'Ilmakuva 1932',
         'Ilmakuva 1943',
         'Ilmakuva 1950',
@@ -59,7 +64,7 @@ map.addControl(
     function chooseMap(ilmakuva) {
         // Set the label to the month
         map.setLayoutProperty(currentLayer, 'visibility', 'none');
-        currentLayer = toggleableLayerIds[ilmakuva];
+        currentLayer = aerialLayers[ilmakuva];
         map.setLayoutProperty(currentLayer, 'visibility', 'visible');
         document.getElementById('ilmakuva').textContent = currentLayer;
     }
