@@ -188,6 +188,10 @@ function loadMapLayers() {
         'tileSize': 256
     });
 
+    map.addSource('streams-shape', {
+        type: 'geojson',
+        data: '/streams.geojson'
+        });
     // Map layers
 
     map.addLayer({
@@ -299,6 +303,17 @@ function loadMapLayers() {
         },
         'aeroway-line'
     );
+
+    map.addLayer({
+        'id': 'streams',
+        'type': 'line',
+        'source': 'streams-shape',
+        'layout': {
+            'visibility': 'visible'
+        }
+    },
+    'aeroway-line'
+);
 
     // Request spreadsheet data
     // https://docs.google.com/spreadsheets/d/1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI/edit?usp=sharing
