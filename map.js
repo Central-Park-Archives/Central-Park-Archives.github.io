@@ -57,7 +57,7 @@ map.addControl(
         'Ilmakuva 1964',
         'Ilmakuva 1976',
         'Ilmakuva 1988',
-        'Ilmakuva 2104'
+        'Ilmakuva 2014'
         
     ];
 
