@@ -2,11 +2,18 @@ body {
   padding: 0;
   margin: 0;
   font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
 }
 body *,
 body *:before,
 body *:after {
   box-sizing: border-box;
+}
+a {
+  color: seagreen;
+  text-decoration: none;
 }
 
 #map {
@@ -35,34 +42,76 @@ body *:after {
   visibility: hidden;
 }
 
-#menu > div {
-  margin-bottom: 24px;
-}
-#menu > div:first-of-type {
+#menu > div:nth-child(3) {
   display: none;
 }
+#menu > * {
+  margin-bottom: 36px;
+}
 #menu h1 {
-  margin: 0 0 24px 0;
+  margin-top: 0;
   padding: 0 0 12px 0;
-  font-size: 18px;
-  border-bottom: 1px solid #333;
+  font-size: 28px;
+  line-height: 1.1;
+  border-bottom: 1px solid #ccc;
+  text-shadow: 2px 2px 0 palegreen;
+  cursor: pointer;
 }
 #menu h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 #menu ul {
   padding: 0;
-  margin: 12px 0;
+  margin: 4px 0;
   list-style: none;
 }
 #menu a {
+  display: block;
+  padding: 0 8px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 2;
   text-decoration: none;
+  color: seagreen;
+  border-radius: 3px;
 }
 #menu .active {
-  color: red;
+  color: white;
+  background-color: seagreen;
+}
+
+#about-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+#about-text {
+  position: absolute;
+  top: 0;
+  left: 220px;
+  bottom: 0;
+  padding: 24px;
+  width: auto;
+  max-width: 640px;
+  z-index: 999;
+  overflow-x: hidden;
+  overflow-y: auto;
+  visibility: hidden !important;
+
+  background-color: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  border-right: 1px solid #ccc;
+}
+#about-text.active {
+  visibility: visible !important;
 }
 
 /* MODAL AND GALLERY */
@@ -130,13 +179,17 @@ body *:after {
 }
 
 /* OVERLAY SLIDER */
-.map-overlay {
+#map-overlay {
   position: absolute;
-  width: 25%;
+  width: 360px;
   bottom: 0;
   left: 220px;
+  visibility: hidden;
 }
-.map-overlay .map-overlay-inner {
+#map-overlay.active {
+  visibility: visible;
+}
+#map-overlay .map-overlay-inner {
   background-color: rgba(255,255,255,0.8);
   backdrop-filter: blur(8px);
   border-top: 1px solid #ccc;
@@ -145,13 +198,13 @@ body *:after {
   border-radius: 0;
   padding: 12px;
 }
-.map-overlay h2 {
+#map-overlay h2 {
   line-height: 24px;
   font-size: 1rem;
   display: block;
   margin: 0 0 10px;
 }
-.map-overlay input {
+#map-overlay input {
   background-color: transparent;
   display: inline-block;
   width: 100%;
