@@ -46,18 +46,6 @@ map.addControl(
 {
   var toggleableLayers = [
     {
-      heading: "Vanhat ilmakuvat",
-      layers: [
-        "Ilmakuva 1932",
-        "Ilmakuva 1943",
-        "Ilmakuva 1950",
-        "Ilmakuva 1964",
-        "Ilmakuva 1976",
-        "Ilmakuva 1988",
-        "Ilmakuva 2014"
-      ]
-    },
-    {
       heading: "Kokoelmat",
       layers: [
         "Allotment garden interviews",
@@ -66,8 +54,26 @@ map.addControl(
     }
   ];
 
+  var aerialLayers = [
+    'Ilmakuva 1932',
+    'Ilmakuva 1943',
+    'Ilmakuva 1950',
+    'Ilmakuva 1964',
+    'Ilmakuva 1976',
+    'Ilmakuva 1988',
+    'Ilmakuva 2014'
+    
+    ];
+
+    var currentLayer = aerialLayers[0];
+
   // Set the label to the aerial image
   function chooseMap(ilmakuva) {
+    map.setLayoutProperty(currentLayer, 'visibility', 'none');
+    currentLayer = aerialLayers[ilmakuva];
+    map.setLayoutProperty(currentLayer, 'visibility', 'visible');
+    document.getElementById('ilmakuva').textContent = currentLayer;
+/*   function chooseMap(ilmakuva) {
     if(ilmakuva > 0) {
       var layername = toggleableLayers[0].layers[ilmakuva + 1];
       map.setLayoutProperty(layername, 'visibility', 'visible');
@@ -85,7 +91,7 @@ map.addControl(
     .addEventListener('input', function (e) {
     var ilmakuva = parseInt(e.target.value, 10);
     chooseMap(ilmakuva);
-  });
+  }); */
 
   // set up the corresponding toggle button for each layer
   var menu = document.getElementById("menu");
