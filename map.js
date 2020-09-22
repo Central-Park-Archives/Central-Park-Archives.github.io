@@ -335,7 +335,7 @@ function addMapInteractions() {
         var fileId = row.properties.link.split("/")[5];
         description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>` // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
         //description += `<p>${row.properties["file name / link"]}</p>`
-        description += `<p>${row.properties.person}</p>`
+        description += `<p>${row.properties.person} ${row.properties.date}</p>`
         description += `<p>${row.properties.summary}</p>`
 
         // Ensure that if the map is zoomed out such that multiple
