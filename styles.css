@@ -1,0 +1,161 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+body *,
+body *:before,
+body *:after {
+  box-sizing: border-box;
+}
+
+#map {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  padding: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 999;
+
+  background-color: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  border-right: 1px solid #ccc;
+}
+#audio {
+  visibility: hidden;
+}
+
+#menu > div {
+  margin-bottom: 24px;
+}
+#menu > div:first-of-type {
+  display: none;
+}
+#menu h1 {
+  margin: 0 0 24px 0;
+  padding: 0 0 12px 0;
+  font-size: 18px;
+  border-bottom: 1px solid #333;
+}
+#menu h2 {
+  margin: 0;
+  font-size: 16px;
+}
+#menu ul {
+  padding: 0;
+  margin: 12px 0;
+  list-style: none;
+}
+#menu a {
+  font-size: 14px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+#menu .active {
+  color: red;
+}
+
+/* MODAL AND GALLERY */
+#images-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 0 0 220px;
+  visibility: hidden !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#images-modal.active {
+  visibility: visible !important;
+}
+#images-modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+.modal-inner {
+  position: relative;
+  padding: 24px;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  max-width: 80vw;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#images-ow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  z-index: 999;
+}
+#images-ow img {
+  max-width: 100%;
+  max-height: 70vh;
+}
+.tns-item,
+.tns-controls {
+  text-align: center;
+}
+.tns-controls button {
+  margin: 0 12px;
+  border: 0;
+  font-size: 16px;
+  line-height: 48px;
+  width: 48px;
+  border-radius: 50%;
+}
+
+/* OVERLAY SLIDER */
+.map-overlay {
+  position: absolute;
+  width: 25%;
+  bottom: 0;
+  left: 220px;
+}
+.map-overlay .map-overlay-inner {
+  background-color: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  padding: 12px;
+}
+.map-overlay h2 {
+  line-height: 24px;
+  font-size: 1rem;
+  display: block;
+  margin: 0 0 10px;
+}
+.map-overlay input {
+  background-color: transparent;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  cursor: ew-resize;
+}
