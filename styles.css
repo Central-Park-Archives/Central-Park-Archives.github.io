@@ -70,9 +70,9 @@ a {
 }
 #menu a {
   display: block;
-  padding: 0 8px;
+  margin: 8px 0;
+  padding: 4px 8px;
   font-size: 14px;
-  line-height: 2;
   text-decoration: none;
   color: seagreen;
   border-radius: 3px;

@@ -45,7 +45,7 @@ map.addControl(
 //  Add layer toggles
 {
   var toggleableLayers = [{
-      heading: "Vanhat ilmakuvat",
+      heading: "Vanhat ilmakuvat / Old aerial maps",
       layers: [
         'Ilmakuva 1932',
         'Ilmakuva 1943',
@@ -57,11 +57,12 @@ map.addControl(
       ]
     },
     {
-      heading: "Kokoelmat",
+      heading: "Kokoelmat/ Collections",
       layers: [
-        "Allotment garden interviews",
-        "Maunulan Sanomat",
-        "Flying Squirrels"
+        "Viljelypalstan tarinoita / Allotment stories",
+        "Maunulan Sanomat / Maunula Newspaper",
+        "Pariutumisleikki / Flying-squirrel mating games",
+        "Yleiskaava 2050 protestit / General plan 2050 protests"
       ]
     }
   ];
@@ -85,9 +86,10 @@ map.addControl(
 
   // set up the corresponding toggle button for each layer
   var menu = document.getElementById("menu");
-  var audioLayer = "Allotment garden interviews";
-  var sanomatLayer = "Maunulan Sanomat";
-  var squirrelsLayer = "Flying squirrels";
+  var audioLayer = "Viljelypalstan tarinoita / Allotment stories";
+  var sanomatLayer = "Maunulan Sanomat / Maunula Newspaper";
+  var squirrelsLayer = "Pariutumisleikki / Flying-squirrel mating games";
+  var protestsLayer = "Yleiskaava 2050 protestit / General plan 2050 protests";
 
   for (var i = 0; i < toggleableLayers.length; i++) {
     var heading = toggleableLayers[i].heading;
@@ -106,7 +108,7 @@ map.addControl(
       var link = document.createElement("a");
       link.href = "#";
       link.textContent = id;
-      link.className = id == audioLayer ? "active" : '';
+      link.className = "active";
 
       link.onclick = function (e) {
         var clickedLayer = this.textContent;
@@ -142,7 +144,6 @@ map.addControl(
 
 map.on("load", function () {
   loadMapLayers();
-
   addMapInteractions();
 });
 
@@ -154,6 +155,12 @@ function loadMapLayers() {
   // Map data sources
 
   map.addSource(audioLayer, {
+    type: "geojson",
+    generateId: true,
+    data: null
+  });
+
+  map.addSource(protestsLayer, {
     type: "geojson",
     generateId: true,
     data: null
@@ -338,6 +345,18 @@ function loadMapLayers() {
   );
 
   map.addLayer({
+      id: protestsLayer,
+      type: "circle",
+      source: protestsLayer,
+      paint: {
+        "circle-color": "yellow",
+        "circle-radius": 10
+      }
+    },
+    "aeroway-line"
+  );
+
+  map.addLayer({
       id: sanomatLayer,
       type: "circle",
       source: {
@@ -386,10 +405,10 @@ function loadMapLayers() {
   );
 
   // Request spreadsheet data
-  // https://docs.google.com/spreadsheets/d/1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI/edit?usp=sharing
+
+  // Audio
   var sheetId = "1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI";
   var sheetName = "Taulukko1";
-
   fetch(
       `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`
     )
@@ -408,9 +427,29 @@ function loadMapLayers() {
       );
     });
 
+  // Protests
+  var sheetIdProtests = "11vGwoFUocfgj_71kEqLxXjsWZwfVvFhGtwAoFDR6icA";
+  var sheetNameProtests = "Sheet2";
+  fetch(
+      `https://docs.google.com/spreadsheets/d/${sheetIdProtests}/gviz/tq?tqx=out:csv&sheet=${sheetNameProtests}`
+    )
+    .then(resp => resp.text())
+    .then(data => {
+      csv2geojson.csv2geojson(
+        data, {
+          latfield: "lat",
+          lonfield: "long",
+          delimiter: ","
+        },
+        function (err, data) {
+          map.getSource(protestsLayer).setData(data);
+        }
+      );
+    });
+
+  // Sanomat
   var sheetIdSanomat = "1sTm4jQas_tA5WGMguqZv7H1N11ShAYjXZ14PIreinp8";
   var sheetNameSanomat = "Sheet2";
-
   fetch(
       `https://docs.google.com/spreadsheets/d/${sheetIdSanomat}/gviz/tq?tqx=out:csv&sheet=${sheetNameSanomat}`
     )
@@ -458,6 +497,7 @@ function loadMapLayers() {
       );
     });
 
+  // Squirrels
   var sheetIdSquirrels = "1i0VdIpYJpJjPiCMQTZEvZW8QaOk947Rq5J1KsHPOsuY";
   var sheetNameSquirrels = "Sheet1";
 
