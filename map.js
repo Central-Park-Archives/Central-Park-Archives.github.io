@@ -44,17 +44,16 @@ map.addControl(
 
 //  Add layer toggles
 {
-  var toggleableLayers = [
-    {
+  var toggleableLayers = [{
       heading: "Vanhat ilmakuvat",
       layers: [
-        "Ilmakuva 1932",
-        "Ilmakuva 1943",
-        "Ilmakuva 1950",
-        "Ilmakuva 1964",
-        "Ilmakuva 1976",
-        "Ilmakuva 1988",
-        "Ilmakuva 2014"
+        'Ilmakuva 1932',
+        'Ilmakuva 1943',
+        'Ilmakuva 1950',
+        'Ilmakuva 1964',
+        'Ilmakuva 1976',
+        'Ilmakuva 1988',
+        'Ilmakuva 2014'
       ]
     },
     {
@@ -65,27 +64,23 @@ map.addControl(
       ]
     }
   ];
+  var currentLayer = toggleableLayers[0]['layers'][0];
 
   // Set the label to the aerial image
   function chooseMap(ilmakuva) {
-    if(ilmakuva > 0) {
-      var layername = toggleableLayers[0].layers[ilmakuva + 1];
-      map.setLayoutProperty(layername, 'visibility', 'visible');
-      document.getElementById('slider-label').textContent = layername;
-    } else {
-      var layerNames = toggleableLayers[0].layers;
-      layerNames.forEach((layer, i) => {
-        map.setLayoutProperty(layer, 'visibility', 'none');
-      });
-      document.getElementById('slider-label').textContent = '';
-    }
+    // Set the label to the aerial imagery name
+    map.setLayoutProperty(currentLayer, 'visibility', 'none');
+    currentLayer = toggleableLayers[0]['layers'][ilmakuva];
+    map.setLayoutProperty(currentLayer, 'visibility', 'visible');
+    document.getElementById('slider-label').textContent = currentLayer;
   }
+
   document
     .getElementById('slider')
     .addEventListener('input', function (e) {
-    var ilmakuva = parseInt(e.target.value, 10);
-    chooseMap(ilmakuva);
-  });
+      var ilmakuva = parseInt(e.target.value, 10);
+      chooseMap(ilmakuva);
+    });
 
   // set up the corresponding toggle button for each layer
   var menu = document.getElementById("menu");
@@ -110,7 +105,7 @@ map.addControl(
       link.textContent = id;
       link.className = id == audioLayer ? "active" : '';
 
-      link.onclick = function(e) {
+      link.onclick = function (e) {
         var clickedLayer = this.textContent;
         e.preventDefault();
         e.stopPropagation();
@@ -142,7 +137,7 @@ map.addControl(
 //  Map logic
 //
 
-map.on("load", function() {
+map.on("load", function () {
   loadMapLayers();
 
   addMapInteractions();
@@ -224,8 +219,7 @@ function loadMapLayers() {
 
   // Map layers
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1932",
       type: "raster",
       source: "aerial-1932",
@@ -236,8 +230,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1943",
       type: "raster",
       source: "aerial-1943",
@@ -248,8 +241,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1950",
       type: "raster",
       source: "aerial-1950",
@@ -260,8 +252,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1964",
       type: "raster",
       source: "aerial-1964",
@@ -272,8 +263,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1976",
       type: "raster",
       source: "aerial-1976",
@@ -284,8 +274,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Ilmakuva 1988",
       type: "raster",
       source: "aerial-1988",
@@ -296,8 +285,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: 'Ilmakuva 2014',
       type: 'raster',
       source: 'aerial-2014',
@@ -308,8 +296,7 @@ function loadMapLayers() {
     'aeroway-line'
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: 'streams',
       type: 'line',
       source: 'streams-shape',
@@ -320,8 +307,7 @@ function loadMapLayers() {
     'aeroway-line'
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: audioLayer,
       type: "circle",
       source: audioLayer,
@@ -348,8 +334,7 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
-  map.addLayer(
-    {
+  map.addLayer({
       id: "Maunulan Sanomat",
       type: "circle",
       source: {
@@ -360,8 +345,7 @@ function loadMapLayers() {
             "type": "Point",
             "coordinates": [24.9129716, 60.2271529]
           },
-          "properties": {
-          }
+          "properties": {}
         }
       },
       paint: {
@@ -380,18 +364,17 @@ function loadMapLayers() {
   var sheetName = "Taulukko1";
 
   fetch(
-    `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`
-  )
+      `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`
+    )
     .then(resp => resp.text())
     .then(data => {
       csv2geojson.csv2geojson(
-        data,
-        {
+        data, {
           latfield: "Latitude",
           lonfield: "Longitude",
           delimiter: ","
         },
-        function(err, data) {
+        function (err, data) {
           // Control volume of audio locations based on distance
           addHotspots(data, audioLayer);
         }
@@ -402,16 +385,15 @@ function loadMapLayers() {
   var sheetNameSanomat = "Sheet2";
 
   fetch(
-    `https://docs.google.com/spreadsheets/d/${sheetIdSanomat}/gviz/tq?tqx=out:csv&sheet=${sheetNameSanomat}`
-  )
+      `https://docs.google.com/spreadsheets/d/${sheetIdSanomat}/gviz/tq?tqx=out:csv&sheet=${sheetNameSanomat}`
+    )
     .then(resp => resp.text())
     .then(data => {
       csv2geojson.csv2geojson(
-        data,
-        {
+        data, {
           delimiter: ","
         },
-        function(err, data) {
+        function (err, data) {
           var images = document.getElementById("images");
 
           data.features.forEach((item, i) => {
@@ -433,7 +415,7 @@ function loadMapLayers() {
             items: 1,
             mode: 'gallery',
             controlsPosition: 'bottom',
-            controlsText: ['←','→'],
+            controlsText: ['←', '→'],
             nav: false
           });
         }
@@ -447,7 +429,7 @@ function loadMapLayers() {
 function addMapInteractions() {
   // When a click event occurs on a feature in the csvData layer, open a popup at the
   // location of the feature, with description HTML from its properties.
-  map.on("click", audioLayer, function(e) {
+  map.on("click", audioLayer, function (e) {
     var row = e.features[0];
     var coordinates = row.geometry.coordinates.slice();
 
@@ -469,15 +451,15 @@ function addMapInteractions() {
 
     //add Popup to map
     new mapboxgl.Popup({
-      maxWidth: "320"
-    })
+        maxWidth: "320"
+      })
       .setLngLat(coordinates)
       .setHTML(description)
       .addTo(map);
   });
 
   // inspect on click
-  map.on("click", audioLayer, function(e) {
+  map.on("click", audioLayer, function (e) {
     var features = map.queryRenderedFeatures(e.point, {
       layers: [audioLayer]
     });
@@ -488,48 +470,52 @@ function addMapInteractions() {
   });
 
   // Change the cursor to a pointer when the mouse is over the places layer.
-  map.on("mouseenter", audioLayer, function() {
+  map.on("mouseenter", audioLayer, function () {
     map.getCanvas().style.cursor = "pointer";
   });
 
   // Change it back to a pointer when it leaves.
-  map.on("mouseleave", audioLayer, function() {
+  map.on("mouseleave", audioLayer, function () {
     map.getCanvas().style.cursor = "";
   });
 
   var imagesModal = document.getElementById("images-modal");
-  map.on("click", "Maunulan Sanomat", function(e) {
+  map.on("click", "Maunulan Sanomat", function (e) {
     imagesModal.className = "active";
   });
-  map.on("mouseenter", "Manulunan Sanomat", function() {
+  map.on("mouseenter", "Manulunan Sanomat", function () {
     map.getCanvas().style.cursor = "pointer";
   });
-  map.on("mouseleave", "Manulunan Sanomat", function() {
+  map.on("mouseleave", "Manulunan Sanomat", function () {
     map.getCanvas().style.cursor = "";
   });
-  document.getElementById("images-modal-close").onclick = function(e){
+  document.getElementById("images-modal-close").onclick = function (e) {
     imagesModal.className = "";
     return false;
   };
 
-  // Toggle overlay
-  var mapOverlayToggle = document.getElementById("map-overlay");
-  document.getElementById("map-overlay-toggle").onclick = function(e){
-    if (mapOverlayToggle.className == 'active') {
-      mapOverlayToggle.className = ''
+  // Toggle aerial timeslider map overlay 
+  var mapOverlay = document.getElementById("map-overlay");
+  document.getElementById("map-overlay-toggle").onclick = function (e) {
+    if (mapOverlay.className == 'active') {
+      mapOverlay.className = ''
+      this.firstElementChild.className = ''
+      map.setLayoutProperty(currentLayer, 'visibility', 'none');
     } else {
-      mapOverlayToggle.className = 'active'
+      mapOverlay.className = 'active'
+      this.firstElementChild.className = 'active'
+      chooseMap(toggleableLayers[0]['layers'].indexOf(currentLayer))
     }
     return false;
   };
 
   // Toggle about-text
   var aboutText = document.getElementById("about-text");
-  document.getElementById("site-title").onclick = function(e){
+  document.getElementById("site-title").onclick = function (e) {
     aboutText.className = "active";
     return false;
   };
-  document.getElementById("about-close").onclick = function(e){
+  document.getElementById("about-close").onclick = function (e) {
     aboutText.className = "";
     return false;
   };
@@ -541,10 +527,11 @@ function addHotspots(data, mapSource) {
   addHotspotAudio();
   updateHotspot(map.getCenter().toArray());
 
-  map.on("move", function(e) {
+  map.on("move", function (e) {
     updateHotspot(map.getCenter().toArray());
   });
 
+  // Control hotspot with mouse
   // map.on('mousemove', function (e) {
   //     updatelHotspot(e.lngLat.toArray();
   // });
@@ -574,15 +561,12 @@ function addHotspots(data, mapSource) {
       map.removeFeatureState({
         source: mapSource
       });
-      map.setFeatureState(
-        {
-          source: mapSource,
-          id: nearestHotspot.properties.featureIndex
-        },
-        {
-          nearest: true
-        }
-      );
+      map.setFeatureState({
+        source: mapSource,
+        id: nearestHotspot.properties.featureIndex
+      }, {
+        nearest: true
+      });
     }
 
     var activeHotspot = false;
@@ -596,17 +580,14 @@ function addHotspots(data, mapSource) {
 
       data.features[idx].properties["distance"] = distance;
 
-      map.setFeatureState(
-        {
-          source: audioLayer,
-          id: idx
-        },
-        {
-          distance: distance,
-          nearby: distance < nearbyHotspotDistance ? true : false,
-          active: distance < activeHotspotDistance ? true : false
-        }
-      );
+      map.setFeatureState({
+        source: audioLayer,
+        id: idx
+      }, {
+        distance: distance,
+        nearby: distance < nearbyHotspotDistance ? true : false,
+        active: distance < activeHotspotDistance ? true : false
+      });
 
       // Play audio of nearby hotspots
 
