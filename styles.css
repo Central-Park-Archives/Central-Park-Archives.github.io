@@ -154,14 +154,14 @@ a {
   justify-content: center;
   align-items: center;
 }
-#images-ow {
+[id $= '-ow'] {
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   z-index: 999;
 }
-#images-ow img {
+[id $= '-ow'] img {
   max-width: 100%;
   max-height: 70vh;
 }

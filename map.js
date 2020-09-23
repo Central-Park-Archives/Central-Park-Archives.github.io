@@ -60,7 +60,8 @@ map.addControl(
       heading: "Kokoelmat",
       layers: [
         "Allotment garden interviews",
-        "Maunulan Sanomat"
+        "Maunulan Sanomat",
+        "Flying Squirrels"
       ]
     }
   ];
@@ -358,6 +359,30 @@ function loadMapLayers() {
     "aeroway-line"
   );
 
+  map.addLayer({
+      id: "Flying Squirrels",
+      type: "circle",
+      source: {
+        "type": "geojson",
+        "data": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.908107, 60.229079]
+          },
+          "properties": {}
+        }
+      },
+      paint: {
+        "circle-color": "brown",
+        "circle-radius": 15,
+        "circle-stroke-color": "white",
+        "circle-stroke-width": 4
+      }
+    },
+    "aeroway-line"
+  );
+
   // Request spreadsheet data
   // https://docs.google.com/spreadsheets/d/1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI/edit?usp=sharing
   var sheetId = "1xdQ4APVwv0hKdVTZNcGdQIg1IWEHaUT-zd7T1WczQQI";
@@ -394,23 +419,82 @@ function loadMapLayers() {
           delimiter: ","
         },
         function (err, data) {
-          var images = document.getElementById("images");
+          var images = document.getElementById("images-sanomat");
 
           data.features.forEach((item, i) => {
             var div = document.createElement("div");
             var img = document.createElement("img");
-            var title = document.createElement("p");
+            var title = document.createElement("h4");
+            var meta = document.createElement("p");
+            var description = document.createElement("p");
+            var person = document.createElement("p");
 
             img.src = `https://drive.google.com/uc?export=view&id=${item.properties.id}`;
-            img.alt = item.properties.otsikko;
-            title.textContent = item.properties.otsikko;
+            img.alt = item.properties.title;
+            title.textContent = `${item.properties.title}`;
+            meta.textContent = `${item.properties.place}, ${item.properties.date}`;
+            description.textContent = `${item.properties.summary}`;
+            person.textContent = `${item.properties.person}`;
 
             div.appendChild(img);
             div.appendChild(title);
+            div.appendChild(meta);
+            div.appendChild(description);
+            div.appendChild(person);
             images.appendChild(div);
           });
 
-          var slider = tns({
+          var sliderSanomat = tns({
+            container: images,
+            items: 1,
+            mode: 'gallery',
+            controlsPosition: 'bottom',
+            controlsText: ['←', '→'],
+            nav: false
+          });
+        }
+      );
+    });
+
+  var sheetIdSquirrels = "1i0VdIpYJpJjPiCMQTZEvZW8QaOk947Rq5J1KsHPOsuY";
+  var sheetNameSquirrels = "Sheet1";
+
+  fetch(
+      `https://docs.google.com/spreadsheets/d/${sheetIdSquirrels}/gviz/tq?tqx=out:csv&sheet=${sheetNameSquirrels}`
+    )
+    .then(resp => resp.text())
+    .then(data => {
+      csv2geojson.csv2geojson(
+        data, {
+          delimiter: ","
+        },
+        function (err, data) {
+          var images = document.getElementById("images-squirrels");
+
+          data.features.forEach((item, i) => {
+            var div = document.createElement("div");
+            var img = document.createElement("img");
+            var title = document.createElement("h4");
+            var meta = document.createElement("p");
+            var description = document.createElement("p");
+            var person = document.createElement("p");
+
+            img.src = `https://drive.google.com/uc?export=view&id=${item.properties.id}`;
+            img.alt = item.properties.title;
+            title.textContent = `${item.properties.title}`;
+            meta.textContent = `${item.properties.place}, ${item.properties.date}`;
+            description.textContent = `${item.properties.summary}`;
+            person.textContent = `${item.properties.person}`;
+
+            div.appendChild(img);
+            div.appendChild(title);
+            div.appendChild(meta);
+            div.appendChild(description);
+            div.appendChild(person);
+            images.appendChild(div);
+          });
+
+          var sliderSquirrels = tns({
             container: images,
             items: 1,
             mode: 'gallery',
@@ -494,7 +578,7 @@ function addMapInteractions() {
     return false;
   };
 
-  // Toggle aerial timeslider map overlay 
+  // Toggle aerial timeslider map overlay
   var mapOverlay = document.getElementById("map-overlay");
   document.getElementById("map-overlay-toggle").onclick = function (e) {
     if (mapOverlay.className == 'active') {
