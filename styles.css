@@ -121,6 +121,7 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
+  margin: 12px;
   padding: 0 0 0 220px;
   visibility: hidden !important;
   display: flex;
@@ -165,17 +166,41 @@ a {
   max-width: 100%;
   max-height: 70vh;
 }
-.tns-item,
+.tns-outer {
+  display: none;
+}
+.tns-outer.active {
+  display: flex;
+}
+.tns-item {
+  text-align: left;
+}
+.tns-item h4,
+.tns-item p:last-child {
+  margin-bottom: 0;
+  width: 70%;
+}
+.tns-item p {
+  margin-top: 0;
+  width: 70%;
+}
 .tns-controls {
-  text-align: center;
+  width: 30%;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  text-align: right;
 }
 .tns-controls button {
-  margin: 0 12px;
+  margin-left: 12px;
   border: 0;
   font-size: 16px;
   line-height: 48px;
   width: 48px;
   border-radius: 50%;
+}
+.tns-controls button:focus {
+  outline: none;
 }
 
 /* OVERLAY SLIDER */

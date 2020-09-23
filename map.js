@@ -86,6 +86,8 @@ map.addControl(
   // set up the corresponding toggle button for each layer
   var menu = document.getElementById("menu");
   var audioLayer = "Allotment garden interviews";
+  var sanomatLayer = "Maunulan Sanomat";
+  var squirrelsLayer = "Flying squirrels";
 
   for (var i = 0; i < toggleableLayers.length; i++) {
     var heading = toggleableLayers[i].heading;
@@ -336,7 +338,7 @@ function loadMapLayers() {
   );
 
   map.addLayer({
-      id: "Maunulan Sanomat",
+      id: sanomatLayer,
       type: "circle",
       source: {
         "type": "geojson",
@@ -360,7 +362,7 @@ function loadMapLayers() {
   );
 
   map.addLayer({
-      id: "Flying Squirrels",
+      id: squirrelsLayer,
       type: "circle",
       source: {
         "type": "geojson",
@@ -564,15 +566,36 @@ function addMapInteractions() {
   });
 
   var imagesModal = document.getElementById("images-modal");
-  map.on("click", "Maunulan Sanomat", function (e) {
+  var tnsGalleries = document.querySelectorAll(".tns-outer");
+
+  map.on("click", sanomatLayer, function (e) {
     imagesModal.className = "active";
+    tnsGalleries.forEach((gallery, i) => {
+      gallery.classList.remove("active");
+    });
+    document.getElementById("images-sanomat-ow").classList.add("active");
   });
-  map.on("mouseenter", "Manulunan Sanomat", function () {
+  map.on("mouseenter", sanomatLayer, function () {
     map.getCanvas().style.cursor = "pointer";
   });
-  map.on("mouseleave", "Manulunan Sanomat", function () {
+  map.on("mouseleave", sanomatLayer, function () {
     map.getCanvas().style.cursor = "";
   });
+
+  map.on("click", squirrelsLayer, function (e) {
+    imagesModal.className = "active";
+    tnsGalleries.forEach((gallery, i) => {
+      gallery.classList.remove("active");
+    });
+    document.getElementById("images-squirrels-ow").classList.add("active");
+  });
+  map.on("mouseenter", squirrelsLayer, function () {
+    map.getCanvas().style.cursor = "pointer";
+  });
+  map.on("mouseleave", squirrelsLayer, function () {
+    map.getCanvas().style.cursor = "";
+  });
+
   document.getElementById("images-modal-close").onclick = function (e) {
     imagesModal.className = "";
     return false;
