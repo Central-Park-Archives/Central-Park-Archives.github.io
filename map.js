@@ -30,7 +30,7 @@ map.setMaxBounds(bounds);
 //
 
 // Add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.NavigationControl());
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
 // Add geolocate control to the map.
 map.addControl(
@@ -39,7 +39,8 @@ map.addControl(
       enableHighAccuracy: true
     },
     trackUserLocation: true
-  })
+  }),
+  'bottom-right'
 );
 
 //  Add layer toggles
@@ -675,12 +676,12 @@ function addMapInteractions() {
   var mapOverlay = document.getElementById("map-overlay");
   document.getElementById("map-overlay-toggle").onclick = function (e) {
     if (mapOverlay.className == 'active') {
-      mapOverlay.className = ''
-      this.firstElementChild.className = ''
+      mapOverlay.className = ""
+      this.firstElementChild.className = ""
       map.setLayoutProperty(currentLayer, 'visibility', 'none');
     } else {
-      mapOverlay.className = 'active'
-      this.firstElementChild.className = 'active'
+      mapOverlay.className = "active"
+      this.firstElementChild.className = "active"
       chooseMap(toggleableLayers[0]['layers'].indexOf(currentLayer))
     }
     return false;
@@ -696,6 +697,18 @@ function addMapInteractions() {
     aboutText.className = "";
     return false;
   };
+
+  // Menu toggle on mobile
+  var menu = document.getElementById("menu");
+  document.getElementById("nav-toggle").onclick = function (e) {
+    if (menu.className == "active") {
+      menu.className = "";
+    } else {
+      menu.className = "active";
+    }
+    return false;
+  };
+
 }
 
 // Add map hotspots from given data points

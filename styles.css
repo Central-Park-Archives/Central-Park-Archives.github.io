@@ -28,8 +28,9 @@ a {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 220px;
   padding: 12px;
+  width: 220px;
+  max-width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 999;
@@ -42,20 +43,40 @@ a {
   visibility: hidden;
 }
 
-#menu > div:nth-child(3) {
-  display: none;
+#menu > div:nth-child(5) {
+  display: none !important;
 }
 #menu > * {
   margin-bottom: 36px;
 }
+#menu #nav-toggle {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  line-height: 30px;
+  font-size: 30px;
+  text-align: center;
+  margin: 0;
+  cursor: pointer;
+}
 #menu h1 {
-  margin-top: 0;
-  padding: 0 0 12px 0;
+  margin: 0;
+  padding-bottom: 12px;
   font-size: 28px;
   line-height: 1.1;
-  border-bottom: 1px solid #ccc;
   text-shadow: 2px 2px 0 palegreen;
   cursor: pointer;
+}
+#menu hr {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+}
+#menu hr + div {
+  margin-top: 36px;
 }
 #menu h2 {
   margin: 0;
@@ -81,6 +102,43 @@ a {
   color: white;
   background-color: seagreen;
 }
+@media only screen and (max-width: 560px) {
+  #menu {
+    width: 100%;
+    bottom: auto;
+    border-right: 0;
+    padding-bottom: 4px;
+  }
+  #menu.active {
+    padding-bottom: 12px;
+  }
+  #menu h1 {
+    margin-right: 48px;
+  }
+  #menu #nav-toggle {
+    display: block;
+  }
+  #menu #nav-toggle span:first-child {
+    display: block;
+  }
+  #menu #nav-toggle span:last-child {
+    display: none;
+  }
+  #menu.active #nav-toggle span:first-child {
+    display: none;
+  }
+  #menu.active #nav-toggle span:last-child {
+    display: block;
+  }
+  #menu div,
+  #menu hr {
+    display: none;
+  }
+  #menu.active div,
+  #menu.active hr {
+    display: block;
+  }
+}
 
 #about-close {
   position: absolute;
@@ -90,6 +148,7 @@ a {
   width: 24px;
   height: 24px;
   line-height: 24px;
+  font-size: 16px;
   text-align: center;
   cursor: pointer;
 }
@@ -112,6 +171,16 @@ a {
 }
 #about-text.active {
   visibility: visible !important;
+}
+@media only screen and (max-width: 560px) {
+  #about-text {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,1);
+  }
 }
 
 .mapboxgl-popup-content img {
@@ -140,6 +209,11 @@ a {
   justify-content: center;
   align-items: center;
 }
+@media only screen and (max-width: 560px) {
+  #images-modal {
+    padding: 0;
+  }
+}
 #images-modal.active {
   visibility: visible !important;
 }
@@ -151,6 +225,7 @@ a {
   width: 24px;
   height: 24px;
   line-height: 24px;
+  font-size: 16px;
   text-align: center;
   cursor: pointer;
 }
@@ -204,11 +279,11 @@ a {
   text-align: right;
 }
 .tns-controls button {
-  margin-left: 12px;
+  margin-left: 8px;
   border: 0;
   font-size: 16px;
-  line-height: 48px;
-  width: 48px;
+  line-height: 36px;
+  width: 36px;
   border-radius: 50%;
 }
 .tns-controls button:focus {
@@ -222,6 +297,11 @@ a {
   bottom: 0;
   left: 220px;
   visibility: hidden;
+}
+@media only screen and (max-width: 560px) {
+  #map-overlay {
+    left: 0;
+  }
 }
 #map-overlay.active {
   visibility: visible;
