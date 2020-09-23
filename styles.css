@@ -114,6 +114,18 @@ a {
   visibility: visible !important;
 }
 
+.mapboxgl-popup-content img {
+  max-width: 420px;
+  max-height: 420px;
+}
+.mapboxgl-popup-content h4,
+.mapboxgl-popup-content p:last-child {
+  margin-bottom: 0;
+}
+.mapboxgl-popup-content p {
+  margin-top: 0;
+}
+
 /* MODAL AND GALLERY */
 #images-modal {
   position: fixed;

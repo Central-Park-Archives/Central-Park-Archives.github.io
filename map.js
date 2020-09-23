@@ -605,14 +605,46 @@ function addMapInteractions() {
     map.getCanvas().style.cursor = "";
   });
 
+  map.on("click", protestsLayer, function (e) {
+    var row = e.features[0];
+    var coordinates = row.geometry.coordinates.slice();
+
+    // You can adjust the values of the popup to match the headers of your CSV.
+    // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+    var description = `<img src="https://drive.google.com/uc?export=view&id=${row.properties.id}"/>`;
+    description += `<h4>${row.properties.title}</h4>`;
+    description += `<p>${row.properties.date}</p>`;
+    description += `<p>${row.properties.summary}</p>`;
+    description += `<p>${row.properties.person}</p>`;
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    //add Popup to map
+    new mapboxgl.Popup({
+        maxWidth: "420"
+      })
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+  });
+  map.on("mouseenter", protestsLayer, function () {
+    map.getCanvas().style.cursor = "pointer";
+  });
+  map.on("mouseleave", protestsLayer, function () {
+    map.getCanvas().style.cursor = "";
+  });
+
   var imagesModal = document.getElementById("images-modal");
   var tnsGalleries = document.querySelectorAll(".tns-outer");
 
   map.on("click", sanomatLayer, function (e) {
     imagesModal.className = "active";
-    tnsGalleries.forEach((gallery, i) => {
-      gallery.classList.remove("active");
-    });
+    document.getElementById("images-squirrels-ow").classList.remove("active");
     document.getElementById("images-sanomat-ow").classList.add("active");
   });
   map.on("mouseenter", sanomatLayer, function () {
@@ -624,9 +656,7 @@ function addMapInteractions() {
 
   map.on("click", squirrelsLayer, function (e) {
     imagesModal.className = "active";
-    tnsGalleries.forEach((gallery, i) => {
-      gallery.classList.remove("active");
-    });
+    document.getElementById("images-sanomat-ow").classList.remove("active");
     document.getElementById("images-squirrels-ow").classList.add("active");
   });
   map.on("mouseenter", squirrelsLayer, function () {
