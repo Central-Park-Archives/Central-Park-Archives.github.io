@@ -732,7 +732,7 @@ function addHotspots(data, mapSource) {
       var fileId = f.properties.link.split("/")[5];
       document.getElementById(
         "audio"
-      ).innerHTML += `<audio controls loop id="audio-${idx}"><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>`;
+      ).innerHTML += `<audio controls loop preload="none" id="audio-${idx}"><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>`;
     });
   }
 
