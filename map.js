@@ -12,7 +12,8 @@
     //style: 'mapbox://styles/centralparkarchives/ckdqg82ru045r19o3mwqadnj0', // stylesheet location
     style: "mapbox://styles/centralparkarchives/ckfbezg2g1f211ap0uzgitj7l", // stylesheet location
     center: [24.912975, 60.227151], // starting position [lng, lat]
-    zoom: 16
+    zoom: 16,
+    hash: true
   });
 }
 
@@ -326,20 +327,39 @@ function loadMapLayers() {
         "circle-color": [
           "case",
           ["boolean", ["feature-state", "focus"], false],
-          "red",
+          "hsla(123, 100%, 35%, 0.79)",
           ["boolean", ["feature-state", "active"], false],
-          "blue",
-          ["boolean", ["feature-state", "nearest"], false],
-          "black",
+          "green",
+          
           "grey"
         ],
         "circle-stroke-width": [
           "case",
+          ["boolean", ["feature-state", "focus"], false],
+          2,
           ["boolean", ["feature-state", "nearest"], false],
+          1,
+          ["boolean", ["feature-state", "active"], false],
           1,
           0
         ],
-        "circle-radius": ["+", 5, ["/", 0.05, ["feature-state", "distance"]]]
+        "circle-stroke-color": [
+          "case",
+          ["boolean", ["feature-state", "focus"], false],
+          "red",
+          ["boolean", ["feature-state", "nearest"], false],
+          "black",
+          ["boolean", ["feature-state", "active"], false],
+          "green",
+          "grey"
+        ],
+        "circle-radius": ["+", 5, ["/", 0.05, ["feature-state", "distance"]]],
+        "circle-opacity": [
+          "case",
+          ["boolean", ["feature-state", "active"], false],
+          ["-", 1, ["/", ["feature-state", "distance"],.1]],
+          0
+        ]
       }
     },
     "aeroway-line"
@@ -556,34 +576,32 @@ function loadMapLayers() {
 function addMapInteractions() {
   // When a click event occurs on a feature in the csvData layer, open a popup at the
   // location of the feature, with description HTML from its properties.
-  map.on("click", audioLayer, function (e) {
-    var row = e.features[0];
-    var coordinates = row.geometry.coordinates.slice();
+  // map.on("click", audioLayer, function (e) {
+  //   var row = e.features[0];
+  //   var coordinates = row.geometry.coordinates.slice();
 
-    // You can adjust the values of the popup to match the headers of your CSV.
-    // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-    var description = `<h4>${row.properties.title}</h4>`;
-    var fileId = row.properties.link.split("/")[5];
-    description += `<audio controls><source src="https://drive.google.com/uc?export=view&id=${fileId}" type="audio/mp3"></audio>`; // Use media from google drive directly https://support.google.com/drive/thread/34363118?hl=en
-    //description += `<p>${row.properties["file name / link"]}</p>`;
-    description += `<p>${row.properties.person} ${row.properties.date}</p>`;
-    description += `<p>${row.properties.summary}</p>`;
+  //   // You can adjust the values of the popup to match the headers of your CSV.
+  //   // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+  //   var description = `<h4>${row.properties.title}</h4>`;
+  //   var fileId = row.properties.link.split("/")[5];
+  //   description += `<p>${row.properties.person} ${row.properties.date}</p>`;
+  //   description += `<p>${row.properties.summary}</p>`;
 
-    // Ensure that if the map is zoomed out such that multiple
-    // copies of the feature are visible, the popup appears
-    // over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
+  //   // Ensure that if the map is zoomed out such that multiple
+  //   // copies of the feature are visible, the popup appears
+  //   // over the copy being pointed to.
+  //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+  //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+  //   }
 
-    //add Popup to map
-    new mapboxgl.Popup({
-        maxWidth: "320"
-      })
-      .setLngLat(coordinates)
-      .setHTML(description)
-      .addTo(map);
-  });
+  //   //add Popup to map
+  //   new mapboxgl.Popup({
+  //       maxWidth: "320"
+  //     })
+  //     .setLngLat(coordinates)
+  //     .setHTML(description)
+  //     .addTo(map);
+  // });
 
   // inspect on click
   map.on("click", audioLayer, function (e) {
@@ -834,3 +852,5 @@ const index = (scale, min, max, bands, n) =>
 const log = x => Math.log(x + 1);
 
 const logBand = n => scaleValue(log, 0, 100, 5, n);
+
+
