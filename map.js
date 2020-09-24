@@ -325,9 +325,9 @@ function loadMapLayers() {
       paint: {
         "circle-color": [
           "case",
-          ["boolean", ["feature-state", "active"], false],
+          ["boolean", ["feature-state", "focus"], false],
           "red",
-          ["boolean", ["feature-state", "nearby"], false],
+          ["boolean", ["feature-state", "active"], false],
           "blue",
           ["boolean", ["feature-state", "nearest"], false],
           "black",
@@ -740,9 +740,9 @@ function addHotspots(data, mapSource) {
   // Calculate distance from location to each hotspot
 
   function updateHotspot(location) {
-    var activeHotspotDistance = 0.005; // Distance at which a location is considered active
-    var nearbyHotspotDistance = 0.07; // Distance at which a location is considered nearby to be audible
-    var maxNearbyHotspots = 3;
+    var activeHotspotDistance = 0.1; // Hotspot content becomes active at this distance
+    var focusHotspotDistance = 0.01; // Focus is given to the nearest hotspot at this distance
+    var maxActiveHotspots = 3;
 
     // Find nearest hotspot to location
     {
@@ -759,8 +759,8 @@ function addHotspots(data, mapSource) {
       });
     }
 
-    var activeHotspot = false;
-    var nearbyHotspots = [];
+    var focusHotspot= false;
+    var activeHotspots = [];
 
     data.features.forEach((f, idx) => {
       var distance = turf.distance(
@@ -775,22 +775,22 @@ function addHotspots(data, mapSource) {
         id: idx
       }, {
         distance: distance,
-        nearby: distance < nearbyHotspotDistance ? true : false,
-        active: distance < activeHotspotDistance ? true : false
+        active: distance < activeHotspotDistance ? true : false,
+        focus: distance < focusHotspotDistance ? true : false
       });
 
       // Play audio of nearby hotspots
 
-      if (distance < nearbyHotspotDistance) {
+      if (distance < activeHotspotDistance) {
         // Focus on a single audio for the nearest active hotspot
-        // Else play all nearby with volume scaled by distance
+        // Else play all active with volume scaled by distance
 
-        if (distance < activeHotspotDistance) {
-          activeHotspot = true;
+        if (distance < focusHotspotDistance) {
+          focusHotspot= true;
 
           if (idx == nearestHotspot.properties.featureIndex) {
             // Pause all nearby hostposts to focus on nearest active one
-            nearbyHotspots.forEach(idx =>
+            activeHotspots.forEach(idx =>
               document.getElementById("audio-" + idx).pause()
             );
 
@@ -798,12 +798,12 @@ function addHotspots(data, mapSource) {
             document.getElementById("audio-" + idx).play();
           }
         } else {
-          if (!activeHotspot && nearbyHotspots.length < maxNearbyHotspots) {
-            nearbyHotspots.push(idx);
+          if (!focusHotspot && activeHotspots.length < maxActiveHotspots) {
+            activeHotspots.push(idx);
 
             var volume = scaleValue(
               distance,
-              [activeHotspotDistance, nearbyHotspotDistance],
+              [focusHotspotDistance, activeHotspotDistance],
               [0.9, 0]
             );
             document.getElementById("audio-" + idx).volume = volume;
