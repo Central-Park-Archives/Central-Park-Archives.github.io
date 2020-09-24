@@ -2,79 +2,97 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Keskuspuisto Arkisto</title>
-    <meta name="description" content="Central Park Archives is a project exploring practices of collaborative archiving together with communities and residents of Maunula, taking the Central Park and the ecological spaces of Maunula as its ground zero. The project seeks to become a contact zone by gathering curated material, archives, and individual/ collective praxis as a form of consolidating existing and situated yet fragmented knowledges.">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Keskuspuisto Arkisto</title>
+  <meta name="description"
+    content="Central Park Archives is a project exploring practices of collaborative archiving together with communities and residents of Maunula, taking the Central Park and the ecological spaces of Maunula as its ground zero. The project seeks to become a contact zone by gathering curated material, archives, and individual/ collective praxis as a form of consolidating existing and situated yet fragmented knowledges.">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Mapbox -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css">
+  <!-- Mapbox -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css">
 
-    <!-- Slider -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+  <!-- Slider -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.2/min/tiny-slider.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
 
-    <!-- Other  -->
-    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-    <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
+  <!-- Other  -->
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+  <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
 
-    <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <nav id="menu">
-      <span id="nav-toggle">
-        <span class="equiv">&equiv;</span>
-        <span class="times">&times;</span>
-      </span>
-      <h1 id="site-title">Keskuspuisto Arkisto</h1>
-      <hr/>
-      <div>
-        <h2>Vanhat ilmakuvat / Old aerial maps</h2>
-        <ul>
-          <li id="map-overlay-toggle"><a href="#">Ilmakuva / Aerial maps</a></li>
-        </ul>
-        <div style="width:237px;height:237px;display:block;margin-left:auto;margin-right:auto;border:1px solid #000;overflow:hidden">
-          <div style="width:337px;height:337px;display:block;background-color:#ff0000;transform-origin: 50% 50%;transform:rotate(15deg);">
-          <img src="https://www.komodo-solutions.co.uk/assets/img/rotation_compass.png" height="237" width="237" alt="compass" style="margin-left:50px;margin-top:50px;" />
-          </div>
-          </div>
-      </div>
-    </nav>
-    <div id="about-text">
-      <span id="about-close">&times;</span>
-      <div class="about-inner">
-        <p><b>Central Park Archives</b> is a project exploring practices of collaborative archiving together with communities and residents of Maunula, taking the Central Park and the ecological spaces of Maunula as its ground zero. The project seeks to become a contact zone by gathering curated material, archives, and individual/ collective praxis as a form of consolidating existing and situated yet fragmented knowledges. Central Park Archives is intended as a long-term framework supported by <a href="https://www.m-cult.org/" target="_blank">m-cult.</a></p>
-        <p>The Central Park Archives project aims to connect a multiplicity of lived experiences, material histories, and struggles, documenting ongoing changes and future visions of the park. The objective is to create a commons of shared archives and a set of sustainable archiving practices around the central park, in close cooperation with local individuals and communities. The concept is based on a federation of sub-archives networked via open data infrastructures and (global, national) online culture resources to create a composite archive.</p>
-        <p>The project proceeds from on-site research and engaging citizens as participants – contributors and collaborators who co-create a (data) commons and shared interface of access – through multiple modes of working together. The process includes discussions, field trips, and peer-learning workshops on co-archiving and working with wikidata and practices of ‘open-sourcing’ content.</p>
-        <hr>
-        <p>The Central Park Archives prototype is developed jointly by <a href="https://aliakbarmehta.com/" target="_blank">Ali Akbar Mehta</a> and <a href="http://m-cult.org/index.php/person/susanna-anas" target="_blank">Susanna Ånäs</a>, and technical support from <a href="https://github.com/planemad" target="_blank">Arun Ganesh</a>, and supported by m-cult team members <a href="http://m-cult.org/index.php/person/minna-tarkka" target="_blank">Minna Tarkka</a>, <a href="http://m-cult.org/index.php/person/iida-nissinen" target="_blank">Iida Nissinen</a> and Kalle Kuisma.</p>
-        <p>The project has evolved through generous material and informational support from individuals suchs as Hannu Kurki, Sussanna Pitkänen, Antti Viren, Jorma Ryske, Vappu Turunen, Osmo Airo, Jorma Karjalainen, Milla Tuormaa; support through local orgainsiations such as Maunula Sanomat, Digital newsaper archive, Keskuspuiston puolesta, and Keskuspuiston puolesta;  and several Maunula Alltoment gardeners such as Virve, Mervi, Leo, and many others who wish to remain anonymous.</p>
+  <nav id="menu">
+    <span id="nav-toggle">
+      <span class="equiv">&equiv;</span>
+      <span class="times">&times;</span>
+    </span>
+    <h1 id="site-title">Keskuspuisto Arkisto</h1>
+    <hr />
+    <div>
+      <h2>Vanhat ilmakuvat / Old aerial maps</h2>
+      <ul>
+        <li id="map-overlay-toggle"><a href="#">Ilmakuva / Aerial maps</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div id="about-text">
+    <span id="about-close">&times;</span>
+    <div class="about-inner">
+      <p><b>Central Park Archives</b> is a project exploring practices of collaborative archiving together with
+        communities and residents of Maunula, taking the Central Park and the ecological spaces of Maunula as its ground
+        zero. The project seeks to become a contact zone by gathering curated material, archives, and individual/
+        collective praxis as a form of consolidating existing and situated yet fragmented knowledges. Central Park
+        Archives is intended as a long-term framework supported by <a href="https://www.m-cult.org/"
+          target="_blank">m-cult.</a></p>
+      <p>The Central Park Archives project aims to connect a multiplicity of lived experiences, material histories, and
+        struggles, documenting ongoing changes and future visions of the park. The objective is to create a commons of
+        shared archives and a set of sustainable archiving practices around the central park, in close cooperation with
+        local individuals and communities. The concept is based on a federation of sub-archives networked via open data
+        infrastructures and (global, national) online culture resources to create a composite archive.</p>
+      <p>The project proceeds from on-site research and engaging citizens as participants – contributors and
+        collaborators who co-create a (data) commons and shared interface of access – through multiple modes of working
+        together. The process includes discussions, field trips, and peer-learning workshops on co-archiving and working
+        with wikidata and practices of ‘open-sourcing’ content.</p>
+      <hr>
+      <p>The Central Park Archives prototype is developed jointly by <a href="https://aliakbarmehta.com/"
+          target="_blank">Ali Akbar Mehta</a> and <a href="http://m-cult.org/index.php/person/susanna-anas"
+          target="_blank">Susanna Ånäs</a>, and technical support from <a href="https://github.com/planemad"
+          target="_blank">Arun Ganesh</a>, and supported by m-cult team members <a
+          href="http://m-cult.org/index.php/person/minna-tarkka" target="_blank">Minna Tarkka</a>, <a
+          href="http://m-cult.org/index.php/person/iida-nissinen" target="_blank">Iida Nissinen</a> and Kalle Kuisma.
+      </p>
+      <p>The project has evolved through generous material and informational support from individuals suchs as Hannu
+        Kurki, Sussanna Pitkänen, Antti Viren, Jorma Ryske, Vappu Turunen, Osmo Airo, Jorma Karjalainen, Milla Tuormaa;
+        support through local orgainsiations such as Maunula Sanomat, Digital newsaper archive, Keskuspuiston puolesta,
+        and Keskuspuiston puolesta; and several Maunula Alltoment gardeners such as Virve, Mervi, Leo, and many others
+        who wish to remain anonymous.</p>
+    </div>
+  </div>
+  <div id="map"></div>
+  <div id="audio"></div>
+  <div id="aerials">
+    <div id="map-overlay">
+      <div class="map-overlay-inner">
+        <h2>Vaihda ilmakuvaa</h2>
+        <label id="slider-label"></label>
+        <input id="slider" type="range" min="0" max="6" step="1" value="0" />
       </div>
     </div>
-    <div id="map"></div>
-    <div id="audio"></div>
-    <div id="aerials">
-      <div id="map-overlay">
-        <div class="map-overlay-inner">
-          <h2>Vaihda ilmakuvaa</h2>
-          <label id="slider-label"></label>
-          <input id="slider" type="range" min="0" max="6" step="1" value="0" />
-        </div>
-      </div>
-    </div>
+  </div>
 
-    <div id="images-modal">
-      <div class="modal-inner">
-        <span id="images-modal-close">&times;</span>
-        <div id="images-sanomat"></div>
-        <div id="images-squirrels"></div>
-      </div>
+  <div id="images-modal">
+    <div class="modal-inner">
+      <span id="images-modal-close">&times;</span>
+      <div id="images-sanomat"></div>
+      <div id="images-squirrels"></div>
     </div>
+  </div>
 
-    <script src="./map.js"></script>
+  <script src="./map.js"></script>
 </body>
 
 </html>

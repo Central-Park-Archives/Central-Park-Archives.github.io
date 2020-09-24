@@ -759,7 +759,7 @@ function addHotspots(data, mapSource) {
       });
     }
 
-    var focusHotspot= false;
+    var focusHotspot = false;
     var activeHotspots = [];
 
     data.features.forEach((f, idx) => {
@@ -786,7 +786,7 @@ function addHotspots(data, mapSource) {
         // Else play all active with volume scaled by distance
 
         if (distance < focusHotspotDistance) {
-          focusHotspot= true;
+          focusHotspot = true;
 
           if (idx == nearestHotspot.properties.featureIndex) {
             // Pause all nearby hostposts to focus on nearest active one
