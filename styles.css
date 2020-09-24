@@ -65,11 +65,16 @@ a {
 #menu h1 {
   margin: 0;
   padding-bottom: 12px;
-  font-size: 28px;
+  font-size: 19px;
   line-height: 1.1;
   text-shadow: 2px 2px 0 palegreen;
   cursor: pointer;
 }
+
+#menu h1 .subtitle {
+  font-size:16px;
+}
+
 #menu hr {
   margin: 0;
   border: 0;
