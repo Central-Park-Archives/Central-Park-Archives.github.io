@@ -55,7 +55,8 @@ map.addControl(
         'Ilmakuva 1964',
         'Ilmakuva 1976',
         'Ilmakuva 1988',
-        'Ilmakuva 2014'
+        'Ilmakuva 2014',
+        'Ilmakuva 2018'
       ]
     },
     {
@@ -224,6 +225,14 @@ function loadMapLayers() {
     tileSize: 256
   });
 
+  map.addSource("aerial-2018", {
+    type: "raster",
+    tiles: [
+      "https://kartta.hel.fi/ws/geoserver/avoindata/wms?SERVICE=WMS&REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=avoindata:Ortoilmakuva_2018_5cm&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=epsg:3857&bbox={bbox-epsg-3857}&WIDTH=256&HEIGHT=256"
+    ],
+    tileSize: 256
+  });
+
   map.addSource('streams-shape', {
     type: 'geojson',
     data: '/streams.geojson'
@@ -301,6 +310,17 @@ function loadMapLayers() {
       id: 'Ilmakuva 2014',
       type: 'raster',
       source: 'aerial-2014',
+      layout: {
+        visibility: 'none'
+      }
+    },
+    'aeroway-line'
+  );
+
+  map.addLayer({
+      id: 'Ilmakuva 2018',
+      type: 'raster',
+      source: 'aerial-2018',
       layout: {
         visibility: 'none'
       }
