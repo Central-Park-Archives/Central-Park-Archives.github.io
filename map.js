@@ -64,8 +64,8 @@ map.addControl(
       layers: [
         "Viljelypalstan tarinoita / Allotment stories",
         "Maunulan Sanomat / Maunula Newspaper",
-        "Pariutumisleikki / Flying-squirrel mating games",
-        "Yleiskaava 2050 protestit / General plan 2050 protests"
+        "Liito-oravien pariutumisleikki / Flying squirrel mating games",
+        "Yleiskaava 2050 -protestit / General plan 2050 protests"
       ]
     }
   ];
