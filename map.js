@@ -394,7 +394,7 @@ function loadMapLayers() {
         "circle-color": "green",
         "circle-stroke-color": "white",
         "circle-stroke-width": 2,
-        "circle-radius": 10
+        "circle-radius": 5
       }
     },
     "aeroway-line"
@@ -416,7 +416,7 @@ function loadMapLayers() {
       },
       paint: {
         "circle-color": "green",
-        "circle-radius": 10,
+        "circle-radius": 5,
         "circle-stroke-color": "white",
         "circle-stroke-width": 2
       }
@@ -440,7 +440,7 @@ function loadMapLayers() {
       },
       paint: {
         "circle-color": "green",
-        "circle-radius": 10,
+        "circle-radius": 5,
         "circle-stroke-color": "white",
         "circle-stroke-width": 2
       }
