@@ -195,8 +195,8 @@ a {
 }
 
 .mapboxgl-popup-content img {
-  max-width: 420px;
-  max-height: 420px;
+  max-width: 640px;
+  max-height: 640px;
 }
 .mapboxgl-popup-content h4,
 .mapboxgl-popup-content p:last-child {

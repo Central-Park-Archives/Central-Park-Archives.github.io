@@ -89,10 +89,10 @@ map.addControl(
 
   // set up the corresponding toggle button for each layer
   var menu = document.getElementById("menu");
-  var audioLayer = "Viljelypalstan tarinoita / Allotment stories";
-  var sanomatLayer = "Maunulan Sanomat / Maunula Newspaper";
-  var squirrelsLayer = "Pariutumisleikki / Flying-squirrel mating games";
-  var protestsLayer = "Yleiskaava 2050 protestit / General plan 2050 protests";
+  var audioLayer = toggleableLayers[1].layers[0];
+  var sanomatLayer = toggleableLayers[1].layers[1];
+  var squirrelsLayer = toggleableLayers[1].layers[2];
+  var protestsLayer = toggleableLayers[1].layers[3];
 
   for (var i = 0; i < toggleableLayers.length; i++) {
     var heading = toggleableLayers[i].heading;
@@ -350,7 +350,7 @@ function loadMapLayers() {
           "hsla(123, 100%, 35%, 0.79)",
           ["boolean", ["feature-state", "active"], false],
           "green",
-          
+
           "grey"
         ],
         "circle-stroke-width": [
@@ -374,12 +374,13 @@ function loadMapLayers() {
           "grey"
         ],
         "circle-radius": ["+", 5, ["/", 0.05, ["feature-state", "distance"]]],
-        "circle-opacity": [
-          "case",
-          ["boolean", ["feature-state", "active"], false],
-          ["-", 1, ["/", ["feature-state", "distance"],.1]],
-          0
-        ]
+        "circle-opacity": 1
+        // "circle-opacity": [
+        //   "case",
+        //   ["boolean", ["feature-state", "active"], false],
+        //   ["-", 1, ["/", ["feature-state", "distance"],.1]],
+        //   0
+        // ]
       }
     },
     "aeroway-line"
@@ -390,7 +391,9 @@ function loadMapLayers() {
       type: "circle",
       source: protestsLayer,
       paint: {
-        "circle-color": "yellow",
+        "circle-color": "green",
+        "circle-stroke-color": "white",
+        "circle-stroke-width": 2,
         "circle-radius": 10
       }
     },
@@ -413,9 +416,9 @@ function loadMapLayers() {
       },
       paint: {
         "circle-color": "green",
-        "circle-radius": 15,
+        "circle-radius": 10,
         "circle-stroke-color": "white",
-        "circle-stroke-width": 4
+        "circle-stroke-width": 2
       }
     },
     "aeroway-line"
@@ -436,10 +439,10 @@ function loadMapLayers() {
         }
       },
       paint: {
-        "circle-color": "brown",
-        "circle-radius": 15,
+        "circle-color": "green",
+        "circle-radius": 10,
         "circle-stroke-color": "white",
-        "circle-stroke-width": 4
+        "circle-stroke-width": 2
       }
     },
     "aeroway-line"
@@ -596,32 +599,32 @@ function loadMapLayers() {
 function addMapInteractions() {
   // When a click event occurs on a feature in the csvData layer, open a popup at the
   // location of the feature, with description HTML from its properties.
-  // map.on("click", audioLayer, function (e) {
-  //   var row = e.features[0];
-  //   var coordinates = row.geometry.coordinates.slice();
+  map.on("click", audioLayer, function (e) {
+    var row = e.features[0];
+    var coordinates = row.geometry.coordinates.slice();
 
-  //   // You can adjust the values of the popup to match the headers of your CSV.
-  //   // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
-  //   var description = `<h4>${row.properties.title}</h4>`;
-  //   var fileId = row.properties.link.split("/")[5];
-  //   description += `<p>${row.properties.person} ${row.properties.date}</p>`;
-  //   description += `<p>${row.properties.summary}</p>`;
+    // You can adjust the values of the popup to match the headers of your CSV.
+    // For example: e.features[0].properties.Name is retrieving information from the field Name in the original CSV.
+    var description = `<h4>${row.properties.title}</h4>`;
+    var fileId = row.properties.link.split("/")[5];
+    description += `<p>${row.properties.person} ${row.properties.date}</p>`;
+    description += `<p>${row.properties.summary}</p>`;
 
-  //   // Ensure that if the map is zoomed out such that multiple
-  //   // copies of the feature are visible, the popup appears
-  //   // over the copy being pointed to.
-  //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-  //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-  //   }
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
 
-  //   //add Popup to map
-  //   new mapboxgl.Popup({
-  //       maxWidth: "320"
-  //     })
-  //     .setLngLat(coordinates)
-  //     .setHTML(description)
-  //     .addTo(map);
-  // });
+    //add Popup to map
+    new mapboxgl.Popup({
+        width: "360"
+      })
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
+  });
 
   // inspect on click
   map.on("click", audioLayer, function (e) {
@@ -665,7 +668,7 @@ function addMapInteractions() {
 
     //add Popup to map
     new mapboxgl.Popup({
-        maxWidth: "420"
+        maxWidth: "640"
       })
       .setLngLat(coordinates)
       .setHTML(description)
@@ -813,7 +816,7 @@ function addHotspots(data, mapSource) {
         id: idx
       }, {
         distance: distance,
-        active: distance < activeHotspotDistance ? true : false,
+        active: true, // distance < activeHotspotDistance ? true : false,
         focus: distance < focusHotspotDistance ? true : false
       });
 
@@ -872,5 +875,3 @@ const index = (scale, min, max, bands, n) =>
 const log = x => Math.log(x + 1);
 
 const logBand = n => scaleValue(log, 0, 100, 5, n);
-
-
